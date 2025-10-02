@@ -3,12 +3,14 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 const db = require('./db');
+require('dotenv').config();
 
 db();
 
 app.use(cors({
     origin: ['http://localhost:3002', 'http://localhost:3001'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
 }));
 app.use('/bootstrap', express.static(
     path.join(__dirname, 'node_modules', 'bootstrap', 'dist')));

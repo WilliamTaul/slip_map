@@ -17,9 +17,8 @@ export function Register({setShowRegister}) {
                 matchPassword: matchPassword
             })
 
-            const { token, refreshToken } = res.data;
-            console.log("Token: ", token);
-            console.log("Refresh Token: ", refreshToken);
+            const token = res.data.token;
+            localStorage.setItem('accessToken', token)
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
                 setErrors(err.response.data.errors)
@@ -32,24 +31,26 @@ export function Register({setShowRegister}) {
 
     return (
         <>
-            <h1>Register Form</h1>
-            <form onSubmit={handleRegister} className='new-item-form'>
-                <div className="form-row">
-                    {errors.username && <p className='error-text'>{ errors.username }</p>}
-                    <label htmlFor="username">Username</label>
-                    <input value={username} onChange={e => setUsername(e.target.value)} type="text" id="username"/>
-                </div>
-                <div className='form-row'>
-                  <label htmlFor="password">Password</label>
-                  <input value={password} onChange={e => setPassword(e.target.value)} type="password" id="password" />
-                  {errors.password && <p className='error-text'>{ errors.password }</p>}  
-                </div>
-                <div className='form-row'>
-                  <label htmlFor="matchPassword">Confirm Password</label>
-                  <input value={matchPassword} onChange={e => setMatchPassword(e.target.value)} type="password" id="matchPassword"/>
-                </div>
-                <button className="btn">Register</button>
-            </form>
+            <div className="form-wrapper">
+              <h1 style={{textAlign: 'center'}}>Register</h1>
+              <form onSubmit={handleRegister} className='new-item-form'>
+                  <div className="form-row">
+                      {errors.username && <p className='error-text'>{ errors.username }</p>}
+                      <label htmlFor="username">Username</label>
+                      <input value={username} onChange={e => setUsername(e.target.value)} type="text" id="username"/>
+                  </div>
+                  <div className='form-row'>
+                    <label htmlFor="password">Password</label>
+                    <input value={password} onChange={e => setPassword(e.target.value)} type="password" id="password" />
+                    {errors.password && <p className='error-text'>{ errors.password }</p>}  
+                  </div>
+                  <div className='form-row'>
+                    <label htmlFor="matchPassword">Confirm Password</label>
+                    <input value={matchPassword} onChange={e => setMatchPassword(e.target.value)} type="password" id="matchPassword"/>
+                  </div>
+                  <button className="btn" style={{margin: "1rem 0", fontSize: "medium"}}>Create Account</button>
+              </form>
+            </div>
         </>
     )
 }
