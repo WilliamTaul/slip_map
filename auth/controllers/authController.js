@@ -6,11 +6,13 @@ import RefreshToken from '../models/refreshToken.js';
 import User from '../models/user.js';
 
 const register = async (req, res) => {
-    if (req.body.password.length < 8) return res.status(409).json({ message: "Password must be at least 8 characters" })
+    if (req.body.password.length < 8) return res.status(409).json({ message: "Password must be at least 8 characters",
+                                                                    errors: {password: "Password must be at least 8 characters!" } })
+    if (req.body.password !== req.body.matchPassword) return res.status(409).json({ errors: { password: "Password must match!" } })
 
     try {
         const existingUser = await User.findOne({username: req.body.username});
-        if (existingUser) return res.status(409).json({ message: 'Username already taken'});
+        if (existingUser) return res.status(409).json({ errors: { username: "Username already taken!" }, message: 'Username already taken'});
 
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         const user = new User({username: req.body.username, password: hashedPassword});
