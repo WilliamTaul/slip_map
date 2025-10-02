@@ -1,23 +1,27 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios'
+
+import api from './api';
 import "../public/styles.css";
 
 export function Login({setActiveState, activeState}) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const navigate = useNavigate();
+
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:3001/auth/login", {
+            const res = await api.post("http://localhost:3001/auth/login", {
                 username: username,
                 password: password
             });
 
             const token= res.data.token;
             localStorage.setItem('accessToken', token);
-
+            navigate("/");
 
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {

@@ -9,12 +9,16 @@ api.interceptors.response.use(
     async error => {
         const originalRequest = error.config;
 
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes('auth/token')) {
             originalRequest._retry = true;
 
             try {
-                await api.post('http://localhost:3001/auth/token');
+                const res = await api.post('http://localhost:3001/auth/token');
+                
+                const newAccessToken = res.data.token;
+                localStorage.setItem('accessToken', newAccessToken);
 
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
                 return api(originalRequest);
             } catch (err) {
                 return Promise.reject(err);
