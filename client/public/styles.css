@@ -188,7 +188,8 @@ body {
 
 .error-text {
   color: var(--imperial-red);
-  font-size: small;
+  font-size: medium;
+  text-align: center;
 }
 
 .nav {
