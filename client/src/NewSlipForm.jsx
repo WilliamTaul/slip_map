@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
+
 import "../public/styles.css";
+import api from "./api.js"
 
 export function NewSlipForm({ activeState, setActiveState }) {
     const [slipName, setSlipName] = useState("");
@@ -50,19 +52,22 @@ export function NewSlipForm({ activeState, setActiveState }) {
 
     const listSlips = async () => {
         try {
-        const response = await fetch('http://localhost:3000/api/slips');
-        if (!response.ok) {
-            throw new Error('Network Response was not ok');
-        }
-        const slips = await response.json();
-        console.log(slips);
+          const token = localStorage.getItem('accessToken');
+          const response = await api.get('http://localhost:3000/api/slips', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          console.log(response.data);
         } catch (error) {
         console.log('Fetch Error', error);
         }
     };
 
-    return (<>
-        <h1>New Slip Form</h1>
+    return (
+    <>
+      <div className='form-wrapper'>
+        <h1 style={{textAlign: "center"}}>New Slip Form</h1>
         <form onSubmit={handleSubmit} className="new-item-form">
           <div className="form-row">
             <label htmlFor="slipName">Slip Name</label>
@@ -94,6 +99,7 @@ export function NewSlipForm({ activeState, setActiveState }) {
           {errors.slipSeason && <p className='error-text'>{errors.slipSeason}</p>}
           <button className="btn">Add Slip</button>
         </form>
+        </div>
 
         <div>
           <button onClick={listSlips} className='btn btn-danger'>List Slips</button>

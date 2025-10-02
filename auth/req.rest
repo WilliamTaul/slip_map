@@ -1,0 +1,38 @@
+POST http://localhost:3001/auth/register
+Content-Type: application/json
+
+{
+    "username": "bingbonge",
+    "password": "12345678",
+    "matchPassword": "12345678"
+}
+
+###
+
+POST http://localhost:3001/auth/login 
+Content-Type: application/json
+
+{
+    "username": "bingbonge",
+    "password": "12345678"
+}
+
+###
+
+POST http://localhost:3001/auth/token
+Content-Type: application/json
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGViZjNjOTc4YTE3YWRmMTdjMjA4MyIsImlhdCI6MTc1OTQ0MTUxMn0.5Nsu45EYM2Dox6so9TTB0GrSxaU4Hd-oXJpHQlLReaA
+
+{
+
+}
+
+
+###
+
+POST http://localhost:3001/auth/logout 
+
+###
+
+GET http://localhost:3000/api/slips
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGViZjNjOTc4YTE3YWRmMTdjMjA4MyIsImlhdCI6MTc1OTQzMTk1Nn0.2q8eBz0GlCzTsYeQ8bAVSM0SYiFwkqxmb3DFtFTshwY

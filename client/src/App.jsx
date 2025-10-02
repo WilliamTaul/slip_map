@@ -1,20 +1,29 @@
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route, Link} from "react-router-dom"
+
+import { Navbar } from './Navbar';
 import { Login } from './Login';
-import "../public/styles.css"
 import { NewSlipForm } from './NewSlipForm';
 import { Register } from './Register';
+import { Home } from './Home';
+
+import "../public/styles.css"
 
 function App() {
   const [activeState, setActiveState] = useState("newSlip");
 
   return (
     <>
-      {activeState === 'newSlip' && <NewSlipForm setActiveState={setActiveState} activeState={activeState}/>}
-      {activeState === 'login' && <Login setActiveState={setActiveState} activeState={activeState}/>}
-      {activeState === 'register' && <Register setActiveState={setActiveState} activeState={activeState}/>}
-      <button className='btn' onClick={() => setActiveState('login')}>Login Page</button>
-      <button className='btn' onClick={() => setActiveState('register')}>Register Page</button>
-      <button className='btn' onClick={() => setActiveState('newSlip')}>New Slip Page</button>
+      
+      <BrowserRouter>
+      <Navbar></Navbar>
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/new-slip" element={<NewSlipForm/>}/>
+        </Routes>
+      </BrowserRouter>
     </>
   )
 }
