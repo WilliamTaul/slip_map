@@ -28,8 +28,8 @@ const register = async (req, res) => {
         await newRefreshToken.save();
         res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'Strict',
+                secure: false,
+                sameSite: 'lax',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             });
         res.status(201).json({ token: token})
@@ -55,8 +55,8 @@ const login = async (req, res) => {
             await refreshToken.save();
             res.cookie('refreshToken', refreshTokenString, {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'Strict',
+                secure: false,
+                sameSite: 'Lax',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             });
             res.status(200).json({ token: token})
