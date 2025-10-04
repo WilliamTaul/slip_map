@@ -1,12 +1,12 @@
 :root {
-  --imperial-red: #FB3640;
-  --steel-blue: #4682b4;
-  --soft-grey: #4a4a4a;
+  --imperial-red: #e12f38;
+  --steel-blue: #3d6f99;
+  --soft-grey: #3e3e3e;
   --white: #ffffff;
-  --aero: #05b2dc;
-  --light-gray: #a0a0a0a0;
-  --aero-hover: #2fc2e3;
-  --imperial-red-hover: #ff5c64;
+  --aero: #0499bf;
+  --light-gray: #8a8a8a;
+  --aero-hover: #26a8ce;
+  --imperial-red-hover: #e95058;
 }
 
 * {
@@ -269,4 +269,3 @@ body {
     display: block;
   }
 }
-
