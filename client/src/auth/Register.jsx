@@ -2,8 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-import api from './api';
-import "../public/styles.css";
+import api from '../helpers/api';
+import "../styles.css";
 
 export function Register({setShowRegister}) {
     const [username, setUsername] = useState("");
