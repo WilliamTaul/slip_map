@@ -1,5 +1,7 @@
-import { useState, useEffect, useRef } from "react"
-import { Link } from "react-router-dom"
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+
+import "../styles.css"
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);

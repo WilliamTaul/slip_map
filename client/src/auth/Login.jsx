@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'
 
-import api from './api';
-import "../public/styles.css";
+import { useAuth } from '../helpers/AuthContext';
 
-export function Login({setActiveState, activeState}) {
+import api from '../helpers/api';
+import "../styles.css";
+
+export function Login() {
+    const { login } = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -20,7 +22,7 @@ export function Login({setActiveState, activeState}) {
             });
 
             const token= res.data.token;
-            localStorage.setItem('accessToken', token);
+            login(token);
             navigate("/");
 
         } catch (err) {
