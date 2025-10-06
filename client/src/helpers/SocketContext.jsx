@@ -8,7 +8,7 @@ export function useSocket() {
     return useContext(SocketContext)
 }
 
-export function SocketProvider({ children }) {
+export default function SocketProvider({ children }) {
     const { isLoggedIn, accessToken } = useAuth();
     const [socket, setSocket] = useState(null);
 

@@ -2,10 +2,12 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-import api from '../helpers/api';
+import { useAuth } from '../helpers/AuthContext';
+
 import "../styles.css";
 
 export function Register({setShowRegister}) {
+    const { register, api } = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [matchPassword, setMatchPassword] = useState("");
@@ -16,14 +18,13 @@ export function Register({setShowRegister}) {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            const res = await api.post("http://localhost:3001/auth/register", {
+            const credentials = {
                 username: username,
                 password: password,
                 matchPassword: matchPassword
-            })
-
-            const token = res.data.token;
-            localStorage.setItem('accessToken', token)
+            };
+                        
+            register(credentials);
             navigate("/");
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
