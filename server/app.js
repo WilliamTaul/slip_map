@@ -26,11 +26,13 @@ const indexRouter = require('./routes/views/index');
 const slipRouter = require('./routes/views/slip');
 const apiSlipRouter = require('./routes/api/slipApi');
 const messageRouter = require('./routes/api/messageRoutes');
+const messageBoardRouter = require('./routes/api/messageBoardRoutes');
 
 app.use('/users', userRouter);
 app.use('/', indexRouter);
 app.use('/slips', slipRouter);
 app.use('/api/slips', apiSlipRouter);
 app.use('/api/message', messageRouter);
+app.use('/api/message-board', messageBoardRouter);
 
 module.exports = app;

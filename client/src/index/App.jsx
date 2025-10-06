@@ -8,12 +8,11 @@ import { Register } from '../auth/Register';
 import { Home } from './Home';
 
 import { AuthProvider } from '../helpers/AuthContext';
-import { SocketProvider } from '../helpers/SocketContext';
+import SocketProvider  from '../helpers/SocketContext';
 
 import "../styles.css";
 
 function App() {
-  const [activeState, setActiveState] = useState("newSlip");
 
   return (
     <>

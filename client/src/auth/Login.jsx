@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../helpers/AuthContext';
 
-import api from '../helpers/api';
 import "../styles.css";
 
 export function Login() {
@@ -16,15 +15,12 @@ export function Login() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await api.post("http://localhost:3001/auth/login", {
-                username: username,
-                password: password
-            });
-
-            const token= res.data.token;
-            login(token);
+            const credentials = {
+              username: username,
+              password: password,
+            };
+            await login(credentials);
             navigate("/");
-
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
                 console.error("Server Error Message:", err.response.data.message);

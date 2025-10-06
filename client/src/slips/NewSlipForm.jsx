@@ -4,10 +4,9 @@ import axios from 'axios';
 import { useAuth } from '../helpers/AuthContext.jsx';
 
 import "../styles.css";
-import api from "../helpers/api.js";
 
 export function NewSlipForm({ activeState, setActiveState }) {
-    const { accessToken } = useAuth();
+    const { accessToken, api } = useAuth();
     const [slipName, setSlipName] = useState("");
     const [slipX, setSlipX] = useState(0);
     const [slipY, setSlipY] = useState(0);
@@ -55,7 +54,6 @@ export function NewSlipForm({ activeState, setActiveState }) {
 
     const listSlips = async () => {
         try {
-          console.log(accessToken)
           const response = await api.get('http://localhost:3000/api/slips', {
             headers: {
               Authorization: `Bearer ${accessToken}`,

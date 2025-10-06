@@ -18,10 +18,10 @@ const register = async (req, res) => {
         const user = new User({username: req.body.username, password: hashedPassword});
         await user.save();
         
-        const token = jwt.sign({id: user._id}, process.env.SECRET_TOKEN, {
+        const token = jwt.sign({id: user._id, role: user.role}, process.env.SECRET_TOKEN, {
             expiresIn: '30s'
         });
-        const refreshToken = jwt.sign({id: user._id}, process.env.REFRESH_TOKEN, {
+        const refreshToken = jwt.sign({id: user._id, role: user.role}, process.env.REFRESH_TOKEN, {
             expiresIn: '7d'
         });
         const newRefreshToken = new RefreshToken({token: refreshToken, userId: user._id});
@@ -30,6 +30,7 @@ const register = async (req, res) => {
                 httpOnly: true,
                 secure: false,
                 sameSite: 'lax',
+                path: '/auth/',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             });
         res.status(201).json({ token: token})
@@ -45,10 +46,10 @@ const login = async (req, res) => {
         if (!user) return res.status(401).json({ message: 'Invalid credentials' });
         if (await bcrypt.compare(req.body.password, user.password)) {
             await RefreshToken.deleteMany({ userId: user.id });
-            const token = jwt.sign({id: user._id}, process.env.SECRET_TOKEN, {
+            const token = jwt.sign({id: user._id, role: user.role}, process.env.SECRET_TOKEN, {
                 expiresIn: '30s'
             });
-            const refreshTokenString = jwt.sign({id: user._id}, process.env.REFRESH_TOKEN, {
+            const refreshTokenString = jwt.sign({id: user._id, role: user.role}, process.env.REFRESH_TOKEN, {
                 expiresIn: '7d'
             });
             const refreshToken = new RefreshToken({token: refreshTokenString, userId: user._id});
@@ -57,6 +58,7 @@ const login = async (req, res) => {
                 httpOnly: true,
                 secure: false,
                 sameSite: 'Lax',
+                path: '/auth/',
                 maxAge: 7 * 24 * 60 * 60 * 1000
             });
             res.status(200).json({ token: token})
@@ -71,7 +73,16 @@ const login = async (req, res) => {
 
 const logout = async (req, res) => {
     try {
-        await RefreshToken.deleteOne({ token: req.body.token });
+        const result = await RefreshToken.deleteOne({ token: req.cookies.refreshToken });
+        if (result.deletedCount === 0) {
+            console.log("No refresh token was found to be deleted!");
+        }
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            secure: false,
+            sameSite: 'Lax',
+            path: '/auth/'
+        });
         res.status(200).json({ message: "Logged out successfully" });
     } catch (err) {
         console.error("Logout error: ", err);
@@ -97,8 +108,6 @@ const token = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
     if (refreshToken == null) return res.status(401).json({ message: 'Unauthorized' });
 
-
-
     try {
         const payload = await verifyJwtAsync(refreshToken, process.env.REFRESH_TOKEN);
         const storedToken = await RefreshToken.findOne({ token: refreshToken });
@@ -106,10 +115,10 @@ const token = async (req, res) => {
 
         await RefreshToken.deleteOne({ token: refreshToken });
         
-        const newToken = jwt.sign({ id: payload.id }, process.env.SECRET_TOKEN, {
+        const newToken = jwt.sign({ id: payload.id, role: payload.role }, process.env.SECRET_TOKEN, {
             expiresIn: '30s'
         });
-        const newRefreshToken= jwt.sign({ id: payload.id }, process.env.REFRESH_TOKEN, {
+        const newRefreshToken= jwt.sign({ id: payload.id, role: payload.role }, process.env.REFRESH_TOKEN, {
             expiresIn: '7d'
         });
         
