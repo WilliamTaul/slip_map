@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import 'dotenv/config';
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -6,9 +6,9 @@ import RefreshToken from '../models/refreshToken.js';
 import User from '../models/user.js';
 
 const register = async (req, res) => {
-    if (req.body.password.length < 8) return res.status(409).json({ message: "Password must be at least 8 characters",
+    if (req.body.password.length < 8) return res.status(400).json({ message: "Password must be at least 8 characters",
                                                                     errors: {password: "Password must be at least 8 characters!" } })
-    if (req.body.password !== req.body.matchPassword) return res.status(409).json({ errors: { password: "Password must match!" } })
+    if (req.body.password !== req.body.matchPassword) return res.status(400).json({ errors: { password: "Password must match!" } })
 
     try {
         const existingUser = await User.findOne({username: req.body.username});
@@ -43,7 +43,7 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         const user = await User.findOne({ username: req.body.username });
-        if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+        if (!user) return res.status(401).json({ error: {login: "Invalid username/password"} });
         if (await bcrypt.compare(req.body.password, user.password)) {
             await RefreshToken.deleteMany({ userId: user.id });
             const token = jwt.sign({id: user._id, role: user.role}, process.env.SECRET_TOKEN, {
@@ -63,7 +63,7 @@ const login = async (req, res) => {
             });
             res.status(200).json({ token: token})
         } else {
-            return res.status(401).json({ message: 'Invalid credentials'});
+            return res.status(401).json({ error: {login: "Invalid username/password"}});
         }
     } catch (err) {
         console.error('Login error: ', err);

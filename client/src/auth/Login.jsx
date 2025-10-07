@@ -9,11 +9,13 @@ export function Login() {
     const { login } = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setErrors({});
         try {
             const credentials = {
               username: username,
@@ -22,8 +24,10 @@ export function Login() {
             await login(credentials);
             navigate("/");
         } catch (err) {
-            if (err.response && err.response.data && err.response.data.message) {
-                console.error("Server Error Message:", err.response.data.message);
+            if (err.response && err.response.data && err.response.data.error) {
+                setUsername("");
+                setPassword("");
+                setErrors(err.response.data.error);
             } else {
                 console.error("Login Error:", err.message);
             }
@@ -44,6 +48,11 @@ export function Login() {
                 <label htmlFor="password">Password</label>
                 <input value={password} onChange={e => setPassword(e.target.value)} type="password" id="password"/>
               </div>
+              {errors.login &&
+                <div>
+                  <p className='error-text'>{errors.login}</p>
+                </div>
+              }
               <div className='form-row inline'>
                 <div className='col-md-6'>
                   <button className="btn" style={{width: "100%"}}>Login</button>
