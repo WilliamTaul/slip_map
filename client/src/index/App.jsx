@@ -6,6 +6,7 @@ import { Login } from '../auth/Login';
 import { NewSlipForm } from '../slips/NewSlipForm';
 import { Register } from '../auth/Register';
 import { Home } from './Home';
+import { Message } from '../messages/Message'
 
 import { AuthProvider } from '../helpers/AuthContext';
 import SocketProvider  from '../helpers/SocketContext';
@@ -26,6 +27,7 @@ function App() {
               <Route path="/login" element={<Login/>}/>
               <Route path="/register" element={<Register/>}/>
               <Route path="/new-slip" element={<NewSlipForm/>}/>
+              <Route path="/message" element={<Message/>}/>
             </Routes>
           </SocketProvider>
           </AuthProvider>
