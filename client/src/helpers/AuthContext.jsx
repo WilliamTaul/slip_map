@@ -19,6 +19,15 @@ export function AuthProvider({ children }) {
         async error => {
             const originalRequest = error.config;
 
+            const excludedPaths = [
+                '/auth/login',
+                '/auth/register'
+            ]
+
+            if (excludedPaths.some(path => originalRequest.url.includes(path))){
+                return Promise.reject(error);
+            }
+
             if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes('auth/token')) {
                 originalRequest._retry = true;
 
@@ -77,11 +86,6 @@ export function AuthProvider({ children }) {
             setUserId(decoded.id);
             setUserRole(decoded.role);
         } catch (err) {
-            if (err.response && err.response.data && err.response.data.message) {
-                console.error("Server Error Message:", err.response.data.message);
-            } else {
-                console.error("Login Error:", err.message);
-            }
             throw err;
         }
     };

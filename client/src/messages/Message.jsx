@@ -6,4 +6,10 @@ import "./styles.css";
 
 export function Message() {
     const [message, setMessage] = useState("");
+
+    return (
+        <>
+          
+        </>
+    )
 }
