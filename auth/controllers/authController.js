@@ -109,12 +109,11 @@ const token = async (req, res) => {
     if (refreshToken == null) return res.status(401).json({ message: 'Unauthorized' });
 
     try {
+        console.log("entering try")
         const payload = await verifyJwtAsync(refreshToken, process.env.REFRESH_TOKEN);
         const storedToken = await RefreshToken.findOne({ token: refreshToken });
         if (!storedToken) return res.status(403).json({ message: 'Forbidden' });
 
-        await RefreshToken.deleteOne({ token: refreshToken });
-        
         const newToken = jwt.sign({ id: payload.id, role: payload.role }, process.env.SECRET_TOKEN, {
             expiresIn: '30s'
         });
@@ -122,13 +121,15 @@ const token = async (req, res) => {
             expiresIn: '7d'
         });
         
-        await new RefreshToken({ token: newRefreshToken, userId: payload.id }).save();
+        console.log("awaiting token")
+        await RefreshToken.findOneAndUpdate({ token: newRefreshToken }, { userId: payload.id }, { upsert: true });
 
         res.cookie('refreshToken', newRefreshToken, {
                 httpOnly: true,
                 secure: true,
                 sameSite: 'Strict',
-                maxAge: 7 * 24 * 60 * 60 * 1000
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                path: '/auth/'
             });
         res.status(200).json({ token: newToken});
 
