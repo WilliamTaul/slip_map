@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import "../public/styles.css";
-import api from "./api.js"
+import { useAuth } from '../helpers/AuthContext.jsx';
+
+import "../styles.css";
 
 export function NewSlipForm({ activeState, setActiveState }) {
+    const { accessToken, api } = useAuth();
     const [slipName, setSlipName] = useState("");
     const [slipX, setSlipX] = useState(0);
     const [slipY, setSlipY] = useState(0);
@@ -52,10 +54,9 @@ export function NewSlipForm({ activeState, setActiveState }) {
 
     const listSlips = async () => {
         try {
-          const token = localStorage.getItem('accessToken');
           const response = await api.get('http://localhost:3000/api/slips', {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${accessToken}`,
             },
           });
           console.log(response.data);

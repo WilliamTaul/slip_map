@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'
 
-import api from './api';
-import "../public/styles.css";
+import { useAuth } from '../helpers/AuthContext';
 
-export function Login({setActiveState, activeState}) {
+import "../styles.css";
+
+export function Login() {
+    const { login } = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,15 +15,12 @@ export function Login({setActiveState, activeState}) {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await api.post("http://localhost:3001/auth/login", {
-                username: username,
-                password: password
-            });
-
-            const token= res.data.token;
-            localStorage.setItem('accessToken', token);
+            const credentials = {
+              username: username,
+              password: password,
+            };
+            await login(credentials);
             navigate("/");
-
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
                 console.error("Server Error Message:", err.response.data.message);
