@@ -29,7 +29,7 @@ function App() {
               <Route path="/register" element={<Register/>}/>
               <Route path="/new-slip" element={<NewSlipForm/>}/>
               <Route path="/message" element={<Message/>}/>
-              <Route path="/message-board" element={<MessageBoard/>}/>
+              <Route path="/message-board/:boardId" element={<MessageBoard/>}/>
             </Routes>
           </SocketProvider>
           </AuthProvider>
