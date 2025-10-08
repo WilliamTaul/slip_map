@@ -1,14 +1,30 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 
-import "../styles.css";
+import { useAuth } from '../helpers/AuthContext';
+import { useSocket } from '../helpers/SocketContext';
+
+import styles from './message.module.css';
 
 export function Message() {
+    const { userId } = useAuth();
+    const { socket } = useSocket();
+
     const [message, setMessage] = useState("");
+
+    const handleSend = async () => {
+        if (!message.trim()) return;
+        socket.emit('chatMessage', {senderId: userId, content: message});
+
+        setMessage("");
+    }
 
     return (
         <>
-          
+          <div className={styles['message-row']}>
+            <textarea value={message} onChange={(e) => setMessage(e.target.value)} 
+             placeholder="Start Typing..." className={styles['message-content']} />
+            <button onClick={() => handleSend()} className={styles['message-button']}>Send</button>
+          </div>
         </>
-    )
+    );
 }

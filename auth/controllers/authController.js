@@ -109,7 +109,6 @@ const token = async (req, res) => {
     if (refreshToken == null) return res.status(401).json({ message: 'Unauthorized' });
 
     try {
-        console.log("entering try")
         const payload = await verifyJwtAsync(refreshToken, process.env.REFRESH_TOKEN);
         const storedToken = await RefreshToken.findOne({ token: refreshToken });
         if (!storedToken) return res.status(403).json({ message: 'Forbidden' });
@@ -121,7 +120,6 @@ const token = async (req, res) => {
             expiresIn: '7d'
         });
         
-        console.log("awaiting token")
         await RefreshToken.findOneAndUpdate({ token: newRefreshToken }, { userId: payload.id }, { upsert: true });
 
         res.cookie('refreshToken', newRefreshToken, {
@@ -142,7 +140,6 @@ const token = async (req, res) => {
 
     return res.status(500).json({ message: 'Server error during token refresh' });
 }
-
 
 }
 

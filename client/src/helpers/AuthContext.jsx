@@ -28,10 +28,7 @@ export function AuthProvider({ children }) {
             '/auth/token'
         ];
 
-        console.log("url:", originalRequest.url);
         if (excludedPaths.some(path => originalRequest.url.includes(path))) {
-            console.log("excluded paths");
-            console.log("Promise error:", error);
             return Promise.reject(error);
         }
 
@@ -57,9 +54,7 @@ export function AuthProvider({ children }) {
 
     return instance;
     }, []);
-    console.log("effect mount")
     useEffect(() => {
-        console.log("refreshing", refreshing)
         if (refreshing.current) return;
         refreshing.current = true;
         const refreshPage = async () => {
@@ -115,8 +110,6 @@ export function AuthProvider({ children }) {
             });
             const token = res.data.token;
             const decoded = jwtDecode(token);
-            console.log("User ID:", decoded.id);
-            console.log("user Role: ", decoded.role);
             setAccessToken(token);
             setIsLoggedIn(true);
             setUserId(decoded.id);
