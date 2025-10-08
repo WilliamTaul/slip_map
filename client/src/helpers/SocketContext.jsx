@@ -37,7 +37,7 @@ export default function SocketProvider({ children }) {
 
     }, [isLoggedIn, accessToken]);
     return (
-        <SocketContext.Provider value={socket}>
+        <SocketContext.Provider value={{ socket }}>
             {children}
         </SocketContext.Provider>
     );

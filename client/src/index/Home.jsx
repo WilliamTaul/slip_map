@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom"
-import { useAuth } from "../helpers/AuthContext"
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../helpers/AuthContext";
+import { useState } from 'react';
 
 import "../styles.css"
 
 export function Home() {
   const { userRole, userId } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -12,6 +14,8 @@ export function Home() {
       <Link to="/login" className="btn">Login</Link>
       <button className="btn">Button</button>
       <button className="btn btn-danger">Button</button>
+      <Link to="/message" className="btn">Message</Link>
+      <button className="btn" onClick={() => navigate('/message-board')}>MessageBoard</button>
       {userRole === 'admin' && <button>admin</button>}
     </>
     )

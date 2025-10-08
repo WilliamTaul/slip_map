@@ -1,0 +1,59 @@
+.message-row {
+    background-color: var(--light-gray);
+    color: var(--steel-blue);
+    display: flex;
+    justify-content: center;
+    border-radius: 0.50em;
+    border: 2px solid var(--aero);
+    margin: 0.1em;
+    padding: 0.25em;
+}
+
+.message-content {
+    resize: none;
+    color: var(--steel-blue);
+    display: flex;
+    border-radius: 0.25em;
+    padding: 0.25em;
+    border: 2px solid var(--steel-blue);
+    font-size: medium;
+    width: 100%;
+    transition: border 0.3s ease;
+}
+
+.message-content:focus {
+    border-color: var(--steel-blue);
+    outline: 2px solid var(--soft-grey);
+}
+
+.message-button {
+  text-decoration: none;
+  background: var(--soft-grey);
+  border: 1px solid var(--aero);
+  color: var(--aero);
+  padding: 0.40em 0.5em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  outline: none;
+  margin: 0.1em;
+  display: inline-block;
+  font-size: inherit; 
+}
+
+.message-button:hover,
+.message-button:focus-visible {
+  background: var(--aero-hover);
+  color: var(--aero);
+}
+
+.message-board {
+    background-color: var(--soft-grey);
+    color: var(--steel-blue);
+    display: flex;
+    justify-content: center;
+    border-radius: 0.50em;
+    border: 5px solid var(--aero);
+    margin: 0.1em;
+    padding: 0.25em;
+    height: 88vh;
+}
