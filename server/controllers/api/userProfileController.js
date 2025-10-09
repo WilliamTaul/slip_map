@@ -25,14 +25,17 @@ const getUserProfile = async (req, res) => {
 
 const createUserProfile = async (req, res) => {
     try {
-        if (!req.body.firstName || !req.body.lastName) return res.status(400).json({ message: "Must provide first and last name" });
+        console.log("create user profile")
+        if (!req.body.firstName || !req.body.lastName) return res.status(400).json({ error: { name: "Must provide first and last name" } });
+        if (req.body.firstName.length < 2) return res.status(400).json({ error: {firstName: "Must be at least 2 characters!" } });
+        if (req.body.lastName.length < 2 ) return res.status(400).json({ error: {lastName: "Must be at least 2 characters!" } });
         const userProfile = new UserProfile({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             userId: req.user.id
         });
         await userProfile.save();
-        return res.status(201).json(userProfile);
+        return res.status(201).json({ message: "User profile created" });
     } catch (err) {
         console.error("Database error: ", err);
         res.status(500).json({ error: "Failed to create user!" });
@@ -55,3 +58,10 @@ const updateUserProfile = async (req, res) => {
         res.status(500).json({ error: "Failed to update user!" });
     }
 };
+
+module.exports = {
+    getUserProfiles,
+    getUserProfile,
+    createUserProfile,
+    updateUserProfile
+}

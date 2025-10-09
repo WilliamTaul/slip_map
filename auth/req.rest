@@ -26,7 +26,9 @@ Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZGViZjNjOT
 {
 
 }
-
+###
+POST http://localhost:3001/auth/update-role
+Content-Type: application/json
 
 ###
 
