@@ -31,15 +31,14 @@ export function NewSlipForm({ activeState, setActiveState }) {
         setErrors(validationErrors);
         } else {
           try {
-            const res = await axios.post("http://localhost:3000/api/slips/new", {
+            const res = await api.post("http://localhost:3000/api/slips/new", {
               slipName: slipName,
               slipX: slipX,
               slipY: slipY,
               season: slipSeason
             });
-            console.log(res.data.message);
+            console.log("Slips balls", res.data.message);
           } catch (err) {
-            console.log(err.response.data.errors)
              if (err.response && err.response.data && err.response.data.message) {
                 console.error("Server Error Message:", err.response.data.message);
             } else {

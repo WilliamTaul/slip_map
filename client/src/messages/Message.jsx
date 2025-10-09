@@ -5,7 +5,7 @@ import { useSocket } from '../helpers/SocketContext';
 
 import styles from './message.module.css';
 
-export function Message() {
+export function Message({ boardId }) {
     const { userId } = useAuth();
     const { socket } = useSocket();
 
@@ -13,7 +13,7 @@ export function Message() {
 
     const handleSend = async () => {
         if (!message.trim()) return;
-        socket.emit('chatMessage', {senderId: userId, content: message});
+        socket.emit('chatMessage', {senderId: userId, content: message, boardId: boardId});
 
         setMessage("");
     }
