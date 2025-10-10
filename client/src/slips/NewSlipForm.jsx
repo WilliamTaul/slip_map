@@ -37,7 +37,6 @@ export function NewSlipForm({ activeState, setActiveState }) {
               slipY: slipY,
               season: slipSeason
             });
-            console.log("Slips balls", res.data.message);
           } catch (err) {
              if (err.response && err.response.data && err.response.data.message) {
                 console.error("Server Error Message:", err.response.data.message);

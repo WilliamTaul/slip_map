@@ -29,7 +29,6 @@ export function AuthProvider({ children }) {
         response => response,
         async error => {
         const originalRequest = error.config;
-        console.log("Original request:", originalRequest)
 
         const excludedPaths = [
             '/auth/login',
@@ -49,12 +48,9 @@ export function AuthProvider({ children }) {
 
             const newAccessToken = res.data.token;
             setAccessToken(newAccessToken);
-            
-            console.log("interceptor", originalRequest)
+
             originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-            console.log("interceper new requeee", originalRequest);
             const retry = await instance(originalRequest);
-            console.log("RETYRY", retry.data)
             return retry;
             } catch (err) {
             return Promise.reject(err);
@@ -94,6 +90,10 @@ export function AuthProvider({ children }) {
         refreshPage();
     }, []);
 
+    const updateUserRole = (role) => {
+        setUserRole(role);
+    }
+    
     const register = async (credentials) => {
         try {
             const res = await api.post("http://localhost:3001/auth/register", {
@@ -154,7 +154,7 @@ export function AuthProvider({ children }) {
 
     const authValue = useMemo(() => ({accessToken, isLoggedIn, api, 
                                       userId, userRole, register, 
-                                      login, logout}), 
+                                      login, logout, updateUserRole}), 
                     [accessToken, isLoggedIn, userId, userRole]);
     return (
         <AuthContext.Provider value={ authValue }>

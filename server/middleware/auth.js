@@ -1,14 +1,10 @@
 const jwt = require('jsonwebtoken');
 
 function authenticateToken(req, res, next) {
-    console.log('HEADERS RECEIVED', req.headers)
     const authHeader = req.headers['authorization'];
-    console.log("AUTH HEADER", authHeader);
     const token = authHeader && authHeader.split(' ')[1];
-    console.log("TOKEN:", token);
 
     if (!token) {
-        console.log("No token?", token);
         return res.status(401).json({ message: "Middleware Unauthorized Access" });
     }
 
