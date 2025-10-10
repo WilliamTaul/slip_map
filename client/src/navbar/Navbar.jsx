@@ -6,8 +6,9 @@ import { useAuth } from '../helpers/AuthContext';
 import "../styles.css"
 
 export function Navbar() {
-    const { logout, isLoggedIn } = useAuth();
+    const { logout, isLoggedIn, api } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
+    const [firstName, setFirstName] = useState("");
     const menuRef = useRef();
 
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ export function Navbar() {
     }
 
     function handleClickOutsideDropdown(event) {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
+            if ((menuRef.current && !menuRef.current.contains(event.target))) {
                 setIsOpen(false);
             }
         };
@@ -29,6 +30,23 @@ export function Navbar() {
             document.removeEventListener("mousedown", handleClickOutsideDropdown);
         }
     }, []);
+
+    useEffect(() => {
+        // update user info when logged in state changes
+        const updateName = async () => {
+            try {
+                if (!isLoggedIn) {
+                    setFirstName("");
+                    return;
+                }
+                const res = await api.get("http://localhost:3000/api/user-profile/info");
+                setFirstName(res.data.firstName);
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        updateName();
+    }, [isLoggedIn])
 
     let navItems = [];
 
@@ -48,11 +66,10 @@ export function Navbar() {
     return (
         <nav className="nav">
             <a href="/" className="site-title">Slip Map</a>
-
             <div className="nav-toggle-wrapper">
               <button
                 className="hamburger"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => setIsOpen(prev => !prev)}
                 aria-label="Toggle menu"
               >
                 &#9776;
@@ -64,6 +81,10 @@ export function Navbar() {
                         <Link to={item.path}>{item.name}</Link>
                     </li>
                   ))}
+                   {firstName.length > 0 && 
+                  <li><button className="btn btn-nav">
+                    {firstName}
+                    </button></li>}
                   {isLoggedIn && 
                     <li key="logout">
                         <button className="btn btn-nav" onClick={() => handleLogout()}>Logout</button>    

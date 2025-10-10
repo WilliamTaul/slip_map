@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../helpers/AuthContext';
 
 export function EditProfile() {
-    const { userRole, api, accessToken, updateUserRole } = useAuth();
+    const { userRole, api, updateUserRole } = useAuth();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -38,6 +39,7 @@ export function EditProfile() {
                     });
                     if (update) {
                         updateUserRole('user')
+                        navigate('/');
                     }
                 } catch (err) {
                     if (err.response && err.response.data && err.response.data.message) {
