@@ -13,8 +13,8 @@ const getUserProfiles = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
     try {
-        if (!req.body.userId) return res.status(400).json({ message: "No user id provided" });
-        const userProfile = await UserProfile.findOne({ _id: req.body.userId });
+        if (!req.user.id) return res.status(400).json({ message: "No user id provided" });
+        const userProfile = await UserProfile.findOne({ userId: req.user.id });
         if (!userProfile) return res.status(404).json({message: "User not found" });
         return res.status(200).json(userProfile);   
     } catch (err) {

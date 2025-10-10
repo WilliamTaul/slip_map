@@ -261,7 +261,16 @@ body {
 }
 
 .nav-toggle-wrapper {
+  display: flex;
+  flex-direction: row;
   position: relative;
+  justify-content: center;
+}
+
+.nav-greeting {
+    display: flex;
+    text-align: center;
+    margin-top: 1rem;
 }
 
 @media (max-width: 768px) {
