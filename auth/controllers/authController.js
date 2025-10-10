@@ -113,8 +113,6 @@ const token = async (req, res) => {
         const storedToken = await RefreshToken.findOne({ token: refreshToken });
         if (!storedToken) return res.status(403).json({ message: 'Forbidden' });
 
-        await RefreshToken.deleteOne({ token: refreshToken });
-        
         const newToken = jwt.sign({ id: payload.id, role: payload.role }, process.env.SECRET_TOKEN, {
             expiresIn: '30s'
         });
@@ -122,27 +120,68 @@ const token = async (req, res) => {
             expiresIn: '7d'
         });
         
-        await new RefreshToken({ token: newRefreshToken, userId: payload.id }).save();
+        await RefreshToken.findOneAndUpdate({ token: newRefreshToken }, { userId: payload.id }, { upsert: true });
 
         res.cookie('refreshToken', newRefreshToken, {
                 httpOnly: true,
                 secure: true,
                 sameSite: 'Strict',
-                maxAge: 7 * 24 * 60 * 60 * 1000
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                path: '/auth/'
             });
         res.status(200).json({ token: newToken});
 
     } catch (err) {
     console.error('Token refresh error:', err);
-
-    if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
-        return res.status(403).json({ message: 'Invalid or expired refresh token' });
+        if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+            return res.status(403).json({ message: 'Invalid or expired refresh token' });
+        }
+        return res.status(500).json({ message: 'Server error during token refresh' });
     }
-
-    return res.status(500).json({ message: 'Server error during token refresh' });
 }
 
+const updateRole = async (req, res) => {
+    console.log("entering auth update role")
+    const allowedRoles = ['admin', 'user'];
 
+    if (!req.body.role) return res.status(400).json({message: "No role provided"});
+    if (!allowedRoles.includes(req.body.role)) return res.status(404).json({message: "bad role"});
+
+    try {
+        console.log("entering try statement")
+        const refreshToken = req.cookies.refreshToken;
+        if (refreshToken == null) return res.status(401).json({message: "bad token"});
+        const payload = await verifyJwtAsync(refreshToken, process.env.REFRESH_TOKEN);
+        const storedToken = await RefreshToken.findOne({ token: refreshToken });
+        if (!storedToken) return res.status(403).json({ message: 'Forbidden' });
+
+        const updated = await User.updateOne({ _id: payload.id }, { $set: {role: req.body.role } });
+        
+        const newToken = jwt.sign({ id: payload.id, role: req.body.role }, process.env.SECRET_TOKEN, {
+            expiresIn: '30s'
+        });
+        const newRefreshToken= jwt.sign({ id: payload.id, role: req.body.role }, process.env.REFRESH_TOKEN, {
+            expiresIn: '7d'
+        });
+        
+        await RefreshToken.findOneAndUpdate({ token: newRefreshToken }, { userId: payload.id }, { upsert: true });
+
+        res.cookie('refreshToken', newRefreshToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'Strict',
+                maxAge: 7 * 24 * 60 * 60 * 1000,
+                path: '/auth/'
+            });
+        res.status(200).json({ token: newToken});
+
+    } catch (err) {
+        console.error('Token refresh error:', err);
+        if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+            return res.status(403).json({ message: 'Invalid or expired refresh token' });
+        }
+        return res.status(500).json({ message: 'Server error during token refresh' });
+    }
 }
 
-export { register, login, logout, token }
+export { register, login, logout, token, updateRole }

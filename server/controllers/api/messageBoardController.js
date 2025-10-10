@@ -1,4 +1,5 @@
 const MessageBoard = require('../../models/messageBoardSchema');
+const Message = require('../../models/messageSchema');
 
 const getMessageBoards = async (req, res) => {
     try {
@@ -12,8 +13,8 @@ const getMessageBoards = async (req, res) => {
 
 const getMessageBoard = async (req, res) => {
     try {
-        if (!req.body.boardId) return res.status(400).json({ message: "board id not provided" });
-        const messageBoard = await MessageBoard.findOne({ _id: req.body.boardId });
+        if (!req.params.boardId) return res.status(400).json({ message: "board id not provided" });
+        const messageBoard = await MessageBoard.findOne({ _id: req.params.boardId });
         if (!messageBoard) return res.status(404).json({ message: "Board not found" });
         return res.status(200).json(messageBoard);
     } catch (err) {
@@ -85,6 +86,20 @@ const messageBoardRemoveUser = async (req, res) => {
     }
 };
 
+const messageBoardGetMessages = async (req, res) => {
+    try {
+        if (!req.params.boardId) return res.status(400).json({ error: {messageBoard: "No board provided" } });
+        const messageBoard = await MessageBoard.findById(req.params.boardId);
+        if (!messageBoard) return res.status(400).json({ error: "no message board found"});
+        if (!messageBoard.users.includes(req.user.id)) return res.status(403).json({ error: "User not authorized for messages" });
+        const messages = await Message.find({ boardId: req.params.boardId });
+        return res.status(200).json(messages);
+    } catch (err) {
+        console.error("Database error: ", err);
+        res.status(500).json({ error: "server error" });
+    }
+}
+
 module.exports = { getMessageBoards, newMessageBoard, deleteMessageBoard,
                    getMessageBoard, messageBoardAddUser, messageBoardRemoveUser,
-                   getUserBoards, }
+                   getUserBoards, messageBoardGetMessages }
