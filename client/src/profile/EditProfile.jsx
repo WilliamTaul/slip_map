@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../helpers/AuthContext';
 
 export function EditProfile() {
-    const { userRole, api, accessToken } = useAuth();
+    const { userRole, api, accessToken, updateUserRole } = useAuth();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [submitted, setSubmitted] = useState(false);
@@ -14,17 +14,12 @@ export function EditProfile() {
         e.preventDefault();
         if (userRole === 'onboarding') {
             try {
-                console.log("submitting profile");
-                console.log("access token", accessToken)
                 const res = await api.post("http://localhost:3000/api/user-profile/new", {
                     firstName: firstName,
                     lastName: lastName
                 });
-                console.log(res);
                 setSubmitted(true);
-                console.log("finished first post")
             } catch (err) {
-                console.log("catched in the submit")
                 if (err.response && err.response.data && err.response.data.message) {
                 console.error("Server Error Message:", err.response.data.message);
                 } else {
@@ -41,6 +36,9 @@ export function EditProfile() {
                     const update = await api.post("http://localhost:3001/auth/update-role", {
                         role: 'user'
                     });
+                    if (update) {
+                        updateUserRole('user')
+                    }
                 } catch (err) {
                     if (err.response && err.response.data && err.response.data.message) {
                     console.error("Server Error Message:", err.response.data.message);

@@ -25,7 +25,6 @@ const getUserProfile = async (req, res) => {
 
 const createUserProfile = async (req, res) => {
     try {
-        console.log("create user profile")
         if (!req.body.firstName || !req.body.lastName) return res.status(400).json({ error: { name: "Must provide first and last name" } });
         if (req.body.firstName.length < 2) return res.status(400).json({ error: {firstName: "Must be at least 2 characters!" } });
         if (req.body.lastName.length < 2 ) return res.status(400).json({ error: {lastName: "Must be at least 2 characters!" } });
