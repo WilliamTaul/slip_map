@@ -1,7 +1,6 @@
 const UserProfile = require('../../models/userProfileSchema');
 
 const getUserProfiles = async (req, res) => {
-    // Development only return all user profiles
     try {
         const userProfiles = await UserProfile.find({});
         return res.status(200).json(userProfiles);

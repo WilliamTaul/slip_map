@@ -48,7 +48,7 @@ export function AuthProvider({ children }) {
             originalRequest._retry = true;
 
             try {
-            const res = await instance.post('http://localhost:3001/auth/token');
+            const res = await instance.post('/auth/token');
 
             const newAccessToken = res.data.token;
             setAccessToken(newAccessToken);
@@ -74,7 +74,7 @@ export function AuthProvider({ children }) {
         refreshing.current = true;
         const refreshPage = async () => {
             try {
-                const res = await api.post('http://localhost:3001/auth/token');
+                const res = await api.post('/auth/token');
                 const token = res.data.token;
                 if (token) {
                     const decoded = jwtDecode(token);
@@ -103,7 +103,7 @@ export function AuthProvider({ children }) {
     
     const register = async (credentials) => {
         try {
-            const res = await api.post("http://localhost:3001/auth/register", {
+            const res = await api.post("/auth/register", {
                 username: credentials.username,
                 password: credentials.password,
                 matchPassword: credentials.matchPassword
@@ -126,7 +126,7 @@ export function AuthProvider({ children }) {
 
     const login = async (credentials) => {
         try {
-            const res = await api.post("http://localhost:3001/auth/login", {
+            const res = await api.post("/auth/login", {
                 username: credentials.username,
                 password: credentials.password,
             });
@@ -143,7 +143,7 @@ export function AuthProvider({ children }) {
 
     const logout = async () => {
         try {
-            await api.post("http://localhost:3001/auth/logout");
+            await api.post("/auth/logout");
         } catch (err) {
             if (err.response && err.response.data && err.response.data.message) {
                 console.error("Server Error Message:", err.response.data.message);

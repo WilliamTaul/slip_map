@@ -24,7 +24,7 @@ export function Message({ boardId }) {
       // get the users name to attach to message
       const getfirstName = async () => {
         try {
-          const res = await api.get("http://localhost:3000/api/user-profile/info");
+          const res = await api.get("/api/user-profile/info");
           console.log("getting first name:", res.data.firstName);
           setFirstName(res.data.firstName);
         } catch (err) {

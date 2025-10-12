@@ -10,11 +10,13 @@ import { Message } from '../messages/Message'
 import { MessageBoard } from '../messages/MessageBoard';
 import { MessageBoards } from '../messages/MessageBoards';
 import { EditProfile } from '../profile/EditProfile';
+import { AdminMessageBoards } from '../messages/AdminMessageBoards';
 
 import { AuthProvider, useAuth} from '../helpers/AuthContext';
 import SocketProvider  from '../helpers/SocketContext';
 
 import "../styles.css";
+
 
 function App() {
 
@@ -59,6 +61,7 @@ function Layout() {
         <Route path="/message" element={<Message/>}/>
         <Route path="/message-board/:boardId" element={<MessageBoard/>}/>
         <Route path="/message-boards" element={<MessageBoards/>}/>
+        <Route path="/admin/message-boards" element={<AdminMessageBoards/>}/>
       </Routes>
   </>
   )

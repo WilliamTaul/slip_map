@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Message = require('../models/messageSchema');
-const messageBoardSchema = require('../models/messageBoardSchema');
+const MessageBoard = require('../models/messageBoardSchema');
 const mongoose = require('mongoose');
 
 module.exports = function (io) {
@@ -28,6 +28,17 @@ module.exports = function (io) {
             console.log(`Socket disconnected: ${socket.id}`);
         })
 
+        socket.on('joinBoard', async (board) => {
+            try {
+                const found = await MessageBoard.findOne({ _id: board.boardId, users: board.senderId });
+                if (found) {
+                    socket.join(board.boardId);
+                }
+            } catch (err) {
+                console.error("User not authorized for message board", err);
+            }
+        })
+
         socket.on('chatMessage', async (msg) => {
             let saved;
             try {
@@ -37,8 +48,7 @@ module.exports = function (io) {
             } catch (err) {
                 console.error("Did not save message: ", err);
             }
-            socket.join(msg.boardId);
-            console.log('Received message id: ', msg);
+            console.log('Received message: ', msg);
             io.to(msg.boardId).emit('chatMessage', saved);
         })
     });

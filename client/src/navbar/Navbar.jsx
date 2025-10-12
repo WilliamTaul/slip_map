@@ -39,7 +39,7 @@ export function Navbar() {
                     setFirstName("");
                     return;
                 }
-                const res = await api.get("http://localhost:3000/api/user-profile/info");
+                const res = await api.get("/api/user-profile/info");
                 setFirstName(res.data.firstName);
             } catch (err) {
                 console.error(err);

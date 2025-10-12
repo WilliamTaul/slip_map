@@ -21,7 +21,7 @@ export function MessageBoard() {
         const getMessages = async (boardId) => {
             console.log("get messages")
             try {
-                const res = await api.get(`http://localhost:3000/api/message-board/${boardId}/messages`);
+                const res = await api.get(`/api/message-board/${boardId}/messages`);
                 setMessages(res.data);
                 console.log(res.data)
             } catch (err) {
@@ -37,7 +37,7 @@ export function MessageBoard() {
         // Retrieve information about the specific board
         const getBoard = async (boardId) => {
             try {
-                const res = await api.get(`http://localhost:3000/api/message-board/${boardId}`);
+                const res = await api.get(`/api/message-board/${boardId}`);
                 setBoardTitle(res.data.title);                
             } catch (err) {
                 console.error("Error fetching board info: ", err.response);

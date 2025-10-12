@@ -16,7 +16,7 @@ export function Home() {
       <button className="btn btn-danger">Button</button>
       <Link to="/message" className="btn">Message</Link>
       <button className="btn" onClick={() => navigate('/message-board')}>MessageBoard</button>
-      {userRole === 'admin' && <button>admin</button>}
+      {userRole === 'admin' && <button className="btn" onClick={() => navigate('/admin/message-boards')}>admin</button>}
       <button className="btn" onClick={() => navigate('/edit-profile')}>Edit Profile</button>
       <button className="btn" onClick={() => navigate('/message-boards')}>Boards</button>
     </>

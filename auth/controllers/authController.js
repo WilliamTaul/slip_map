@@ -47,7 +47,7 @@ const login = async (req, res) => {
         if (await bcrypt.compare(req.body.password, user.password)) {
             await RefreshToken.deleteMany({ userId: user.id });
             const token = jwt.sign({id: user._id, role: user.role}, process.env.SECRET_TOKEN, {
-                expiresIn: '30s'
+                expiresIn: '15m'
             });
             const refreshTokenString = jwt.sign({id: user._id, role: user.role}, process.env.REFRESH_TOKEN, {
                 expiresIn: '7d'

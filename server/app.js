@@ -9,7 +9,7 @@ require('dotenv').config();
 db();
 
 app.use(cors({
-    origin: ['http://localhost:3002', 'http://localhost:3001'],
+    origin: ['http://localhost:3002', 'http://localhost:3001',],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization'],

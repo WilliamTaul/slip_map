@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../helpers/AuthContext';
@@ -12,11 +12,18 @@ export function MessageBoards() {
     const { userId, api, accessToken } = useAuth();
     const  navigate  = useNavigate();
 
+    const handleJoin = (boardId) => {
+        if (boardId) {
+            socket.emit('joinBoard', {senderId: userId, boardId: boardId});
+            navigate(`/message-board/${boardId}`);
+        }
+    }
+
     useEffect(() => {
         // Retrieve all boards that the user has access to
         const getBoards = async (userId) => {
             try {
-                const res = await api.get("http://localhost:3000/api/message-board/user");
+                const res = await api.get("/api/message-board/user");
                 setMessageBoards(res.data);
             } catch (err) {
                console.error("Server Error: ", err);
@@ -31,7 +38,7 @@ export function MessageBoards() {
         <div className={styles['message-boards-wrapper']}>
           <ul className={styles['message-board-list']}>
             {messageBoards.map(board =>
-                <li onClick={() => navigate(`/message-board/${board._id}`)} key={board._id}>
+                <li onClick={() => handleJoin(board._id)} key={board._id}>
                     {board.title}
                 </li>
                 

@@ -15,7 +15,7 @@ export function EditProfile() {
         e.preventDefault();
         if (userRole === 'onboarding') {
             try {
-                const res = await api.post("http://localhost:3000/api/user-profile/new", {
+                const res = await api.post("/api/user-profile/new", {
                     firstName: firstName,
                     lastName: lastName
                 });
@@ -34,7 +34,7 @@ export function EditProfile() {
         const handleUpdateRole = async () => {
             if (userRole === 'onboarding' && submitted === true) {
                 try {
-                    const update = await api.post("http://localhost:3001/auth/update-role", {
+                    const update = await api.post("/auth/update-role", {
                         role: 'user'
                     });
                     if (update) {
