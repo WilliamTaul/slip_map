@@ -1,6 +1,8 @@
 const MessageBoard = require('../../models/messageBoardSchema');
 const Message = require('../../models/messageSchema');
 
+const { Types } = require('mongoose');
+
 const getMessageBoards = async (req, res) => {
     try {
         const messageBoards = await MessageBoard.find({});
@@ -14,7 +16,7 @@ const getMessageBoards = async (req, res) => {
 const getMessageBoard = async (req, res) => {
     try {
         if (!req.params.boardId) return res.status(400).json({ message: "board id not provided" });
-        const messageBoard = await MessageBoard.findOne({ _id: req.params.boardId });
+        const messageBoard = await MessageBoard.findById(req.params.boardId);
         if (!messageBoard) return res.status(404).json({ message: "Board not found" });
         return res.status(200).json(messageBoard);
     } catch (err) {
@@ -25,6 +27,7 @@ const getMessageBoard = async (req, res) => {
 
 const getUserBoards = async (req, res) => {
     try {
+        console.log("USER:" , req.user.id);
         if (!req.user.id) return res.status(400).json({message: "no user provided" });
         const boards = await MessageBoard.find({ users: req.user.id });
         return res.status(200).json(boards);

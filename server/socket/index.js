@@ -29,15 +29,17 @@ module.exports = function (io) {
         })
 
         socket.on('chatMessage', async (msg) => {
-            socket.join(msg.boardId);
-            console.log('Received message: ', msg.content);
-            io.to(msg.boardId).emit('chatMessage', msg);
-
+            let saved;
             try {
-                const saved = await Message.create({senderId: msg.senderId, content: msg.content, boardId: new mongoose.Types.ObjectId(msg.boardId)});
+                saved = await Message.create({senderId: msg.senderId, content: msg.content, 
+                                            boardId: new mongoose.Types.ObjectId(msg.boardId),
+                                           firstName: msg.firstName});
             } catch (err) {
                 console.error("Did not save message: ", err);
             }
+            socket.join(msg.boardId);
+            console.log('Received message id: ', msg);
+            io.to(msg.boardId).emit('chatMessage', saved);
         })
     });
 };

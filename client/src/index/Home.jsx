@@ -18,6 +18,7 @@ export function Home() {
       <button className="btn" onClick={() => navigate('/message-board')}>MessageBoard</button>
       {userRole === 'admin' && <button>admin</button>}
       <button className="btn" onClick={() => navigate('/edit-profile')}>Edit Profile</button>
+      <button className="btn" onClick={() => navigate('/message-boards')}>Boards</button>
     </>
     )
 }

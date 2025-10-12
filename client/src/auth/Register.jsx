@@ -56,6 +56,7 @@ export function Register() {
                   </div>
                   <button className="btn" style={{margin: "1rem 0", fontSize: "medium"}}>Create Account</button>
               </form>
+              <button onClick={() => navigate('/login')} className='btn btn-danger' style={{width: "100%"}}>Return to login</button>
             </div>
         </>
     )

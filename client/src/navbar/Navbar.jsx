@@ -6,7 +6,7 @@ import { useAuth } from '../helpers/AuthContext';
 import "../styles.css"
 
 export function Navbar() {
-    const { logout, isLoggedIn, api } = useAuth();
+    const { logout, isLoggedIn, api, userRole } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
     const [firstName, setFirstName] = useState("");
     const menuRef = useRef();
@@ -35,7 +35,7 @@ export function Navbar() {
         // update user info when logged in state changes
         const updateName = async () => {
             try {
-                if (!isLoggedIn) {
+                if (!isLoggedIn || userRole === 'admin') {
                     setFirstName("");
                     return;
                 }
@@ -65,7 +65,7 @@ export function Navbar() {
 
     return (
         <nav className="nav">
-            <a href="/" className="site-title">Slip Map</a>
+            <a href="/" className="site-title">Taulkie</a>
             <div className="nav-toggle-wrapper">
               <button
                 className="hamburger"

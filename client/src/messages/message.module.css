@@ -1,3 +1,7 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 .message-row {
     background-color: var(--light-gray);
     color: var(--steel-blue);
@@ -47,13 +51,84 @@
 }
 
 .message-board {
-    background-color: var(--soft-grey);
+    background-color: var(--light-gray);
     color: var(--steel-blue);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     border-radius: 0.50em;
     border: 5px solid var(--aero);
     margin: 0.1em;
     padding: 0.25em;
-    height: 88vh;
+    height: 84vh;
+    overflow-y: auto;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  margin: 0;
+  padding: 0;
+  margin-left: 1rem;
+  list-style: none;
+}
+
+.message-list li {
+  display: flex;
+  color: var(--aero);
+  background-color: var(--soft-grey);
+  flex-direction: column;
+  border: solid 2px var(--aero);
+  border-radius: 0.5em;
+  width: 50%;
+  margin-top: 0.25em;
+  padding: 0.5em;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.message-board-title-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.message-board-title {
+  text-align: center;
+  color: var(--aero);
+  margin: 0;
+}
+
+.message-boards-wrapper {
+  display: flex;
+  justify-content: center;
+  background: var(--soft-grey);
+  padding: 0.25em;
+  border-radius: 0.5rem;
+}
+
+.message-board-list {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.message-board-list li {
+  background-color: var(--soft-grey);
+  border: 2px solid var(--aero);
+  color: var(--aero);
+  padding: 0.4em 0.5em;
+  border-radius: 0.5em;
+  font-size: large;
+  margin-top: 0.1em;
+  cursor: pointer;
+}
+
+.message-board-list li:hover,
+.message-board-list li:focus-visible {
+  background: var(--aero-hover);
+  color: var(--aero);
 }

@@ -8,6 +8,7 @@ import { Register } from '../auth/Register';
 import { Home } from './Home';
 import { Message } from '../messages/Message'
 import { MessageBoard } from '../messages/MessageBoard';
+import { MessageBoards } from '../messages/MessageBoards';
 import { EditProfile } from '../profile/EditProfile';
 
 import { AuthProvider, useAuth} from '../helpers/AuthContext';
@@ -22,9 +23,9 @@ function App() {
       
       <BrowserRouter>
         <AuthProvider>
-        <SocketProvider>
-          <Layout></Layout>
-          </SocketProvider>
+          <SocketProvider>
+            <Layout></Layout>
+           </SocketProvider>
           </AuthProvider>
       </BrowserRouter>
     </>
@@ -32,12 +33,20 @@ function App() {
 }
 
 function Layout() {
-  const { userRole, accessToken } = useAuth();
+  const { userRole, isAuthLoading, isLoggedIn } = useAuth();
   const location = useLocation();
+
+  if (isAuthLoading) {
+    return <div>Loading..</div>
+  }
 
   if (userRole === 'onboarding' && location.pathname !== '/edit-profile') {
     return <Navigate to="/edit-profile" replace/>
   }
+  if (!isLoggedIn && location.pathname !== '/login' && location.pathname !== '/register') {
+    return <Navigate to="/login" replace />;
+  }
+
   return (
   <>
     <Navbar></Navbar>
@@ -49,6 +58,7 @@ function Layout() {
         <Route path="/new-slip" element={<NewSlipForm/>}/>
         <Route path="/message" element={<Message/>}/>
         <Route path="/message-board/:boardId" element={<MessageBoard/>}/>
+        <Route path="/message-boards" element={<MessageBoards/>}/>
       </Routes>
   </>
   )

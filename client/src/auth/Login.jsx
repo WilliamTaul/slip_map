@@ -61,10 +61,12 @@ export function Login() {
                   <Link className="btn btn-danger" to="/" style={{width: "100%", textAlign: "center"}}>Cancel</Link>
                 </div>
               </div>
+              <div className='form-row'>
+                <label htmlFor="register" style={{textAlign: "center"}}>Don't have an account?</label>
+                <button onClick={() => navigate('/register')} className='btn' style={{width: "100%"}}>Register</button>
+              </div>
             </form>
-            
           </div>
-          
         </>  
     )
 }

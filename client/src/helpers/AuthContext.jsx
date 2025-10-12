@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect, useMemo , useRef} from 'react';
+import { useNavigate} from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
@@ -9,8 +10,11 @@ export function AuthProvider({ children }) {
     const [userRole, setUserRole] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAuthLoading, setIsAuthLoading] = useState(true);
     
     const refreshing = useRef(false);
+
+    const navigate = useNavigate();
 
     const api = useMemo(() => {
         const instance = axios.create({
@@ -79,8 +83,11 @@ export function AuthProvider({ children }) {
                     setUserId(decoded.id);
                     setUserRole(decoded.role);
                 }
+                console.log("done loading auth")
+                setIsAuthLoading(false);
             } catch (err) {
-                 if (err.response && err.response.data && err.response.data.message) {
+                setIsAuthLoading(false); 
+                if (err.response && err.response.data && err.response.data.message) {
                     console.error("Server Error Message:", err.response.data.message);
                 } else {
                     console.error("Login Error:", err.message);
@@ -153,9 +160,9 @@ export function AuthProvider({ children }) {
     
 
     const authValue = useMemo(() => ({accessToken, isLoggedIn, api, 
-                                      userId, userRole, register, 
+                                      userId, userRole, isAuthLoading, register, 
                                       login, logout, updateUserRole}), 
-                    [accessToken, isLoggedIn, userId, userRole]);
+                    [accessToken, isLoggedIn, userId, userRole, isAuthLoading]);
     return (
         <AuthContext.Provider value={ authValue }>
             {children}
