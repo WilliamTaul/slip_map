@@ -11,7 +11,7 @@ export function SearchBar({ userProfiles, setFilteredProfiles }) {
     useEffect(() => {
         // set filtered profiles
         setFilteredProfiles(filteredUsers);
-        console.log(filteredUsers);
+        console.log("Search bar",filteredUsers);
     }, [query, userProfiles]);
 
     return (

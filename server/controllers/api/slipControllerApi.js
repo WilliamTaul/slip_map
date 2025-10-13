@@ -21,10 +21,6 @@ const newSlip = async (req, res) => {
             errors: { slipName: "Slip name is already being used." }
         });
 
-        if (req.body.slipX === "69" && req.body.slipY === "420") {
-            return res.status(409).json({errors: {slipX: "Magic Number", slipY: "Has Been ACHIEVED!"}})
-        }
-
         const slip = new Slip({ name: req.body.slipName, x: req.body.slipX,
                                 y: req.body.slipY, season: req.body.season });
         await slip.save();

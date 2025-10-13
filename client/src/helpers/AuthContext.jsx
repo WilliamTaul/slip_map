@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
     });
     instance.interceptors.request.use(
         config => {
-            if (accessToken) {
+            if (!config.headers.Authorization && accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
             }
             return config;
@@ -44,18 +44,24 @@ export function AuthProvider({ children }) {
             return Promise.reject(error);
         }
 
-        if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes('auth/token')) {
+        if ((error.response?.status === 401 || error.response?.status === 403) && !originalRequest._retry && !originalRequest.url.includes('auth/token')) {
             originalRequest._retry = true;
-
             try {
-            const res = await instance.post('/auth/token');
+                const res = await instance.post('/auth/token');
 
-            const newAccessToken = res.data.token;
-            setAccessToken(newAccessToken);
+                const newAccessToken = res.data.token;
+                setAccessToken(newAccessToken);
 
-            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-            const retry = await instance(originalRequest);
-            return retry;
+                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
+                
+                /*const retry = await axios({
+                        ...originalRequest,
+                            headers: {
+                                ...originalRequest.headers,
+                                Authorization: `Bearer ${newAccessToken}`,
+                                },
+                });*/
+                return instance(originalRequest);
             } catch (err) {
             return Promise.reject(err);
             }
@@ -83,7 +89,6 @@ export function AuthProvider({ children }) {
                     setUserId(decoded.id);
                     setUserRole(decoded.role);
                 }
-                console.log("done loading auth")
                 setIsAuthLoading(false);
             } catch (err) {
                 setIsAuthLoading(false); 
