@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const refreshSchema = new mongoose.Schema({
     token: {type: String, required: true, unique: true},
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
-    createdAt: { type: Date, default: Date.now, expires: '7d'}
+    createdAt: { type: Date, default: Date.now, expires: 60 * 60 * 24 * 7} // 7 day expiration
 })
 
 const RefreshToken = mongoose.model('RefreshToken', refreshSchema);

@@ -40,6 +40,10 @@ module.exports = function (io) {
         })
 
         socket.on('chatMessage', async (msg) => {
+            const boardId = msg.boardId;
+            if (!socket.rooms.has(boardId)) {
+                socket.join(boardId);
+            }
             let saved;
             try {
                 saved = await Message.create({senderId: msg.senderId, content: msg.content, 

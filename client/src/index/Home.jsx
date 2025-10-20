@@ -1,24 +1,33 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../helpers/AuthContext";
-import { useState } from 'react';
-
-import "../styles.css"
-
 export function Home() {
-  const { userRole, userId } = useAuth();
-  const navigate = useNavigate();
 
   return (
     <>
-      <h1>Home</h1>
-      <Link to="/login" className="btn">Login</Link>
-      <button className="btn">Button</button>
-      <button className="btn btn-danger">Button</button>
-      <Link to="/message" className="btn">Message</Link>
-      <button className="btn" onClick={() => navigate('/message-board')}>MessageBoard</button>
-      {userRole === 'admin' && <button className="btn" onClick={() => navigate('/admin/message-boards')}>admin</button>}
-      <button className="btn" onClick={() => navigate('/edit-profile')}>Edit Profile</button>
-      <button className="btn" onClick={() => navigate('/message-boards')}>Boards</button>
+      <h1 style={{textAlign: "center"}}>Welcome!</h1>
+      <div className="welcome-message">
+        <div className="home-div">
+          Thanks for checking out my real-time messaging application. 
+          This project is built with a modern full-stack Javascript architecture and 
+          designed to provide an interactive chat experience.
+         </div>
+         <div className="home-div">
+          Once users are registered they will be placed inside the "default"
+          chat room. They can navigate to boards and join this chat room to test out functionality.
+          To join more message boards, an admin must grant them access to the respective board.
+          This ensures that users can only join boards they have access to.
+         </div>
+         <div className="home-div">
+          Admins will have an extra navigation option to access the Admin Panel.
+          Here they will be able to create new boards, delete existing boards, and manage users
+          within boards. 
+         </div>
+         <div className="home-div">
+          For a detailed overview of the project including technical highlights, development decisions, 
+          scalability, future plans, and the full tech stack please visit the GitHub repository linked below.
+         </div>
+         <div className="home-div">
+          <a className="home-link" href="https://github.com/">Taulkie's Repo</a>
+         </div>
+      </div>
     </>
     )
 }

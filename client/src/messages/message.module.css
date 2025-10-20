@@ -4,7 +4,7 @@
 
 .message-row {
     background-color: var(--light-gray);
-    color: var(--steel-blue);
+    color: var(--white);
     display: flex;
     justify-content: center;
     border-radius: 0.50em;
@@ -19,7 +19,7 @@
     display: flex;
     border-radius: 0.25em;
     padding: 0.25em;
-    border: 2px solid var(--steel-blue);
+    border: 2px solid var(--aero);
     font-size: medium;
     width: 100%;
     transition: border 0.3s ease;
@@ -73,12 +73,29 @@
   list-style: none;
 }
 
-.message-list li {
+.message-list-user {
+  align-self: flex-end;
   display: flex;
   color: var(--aero);
   background-color: var(--soft-grey);
   flex-direction: column;
   border: solid 2px var(--aero);
+  border-radius: 0.5em;
+  width: 50%;
+  margin-top: 0.25em;
+  padding: 0.5em;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+.message-list-other {
+  align-self: flex-start;
+  display: flex;
+  color: var(--aero);
+  background-color: var(--soft-grey);
+  flex-direction: column;
+  border: solid 2px var(--white);
   border-radius: 0.5em;
   width: 50%;
   margin-top: 0.25em;
@@ -140,7 +157,7 @@
   border-radius: 0.5em;
   max-width: 90%;
   max-height: 90vh;
-  height: 85vh;
+  height: 75vh;
   box-shadow: rgba(0,0,0,0.3);
   overflow: hidden;
 }
@@ -307,4 +324,28 @@
 
 .user-scroll::-webkit-scrollbar-track {
   background-color: transparent;
+}
+
+.confirm-modal {
+  background: var(--soft-grey);
+  border: 2px solid var(--aero);
+  padding: 2em;
+  border-radius: 0.5em;
+  max-width: 90%;
+  height: 40vh;
+  box-shadow: rgba(0,0,0,0.3);
+  overflow: hidden;
+}
+
+.confirm-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding-top: 5vh;
 }

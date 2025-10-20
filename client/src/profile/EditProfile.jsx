@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../helpers/AuthContext';
 
 export function EditProfile() {
-    const { userRole, api, updateUserRole } = useAuth();
+    const { userId, userRole, api, updateUserRole } = useAuth();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [submitted, setSubmitted] = useState(false);
@@ -13,6 +13,7 @@ export function EditProfile() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrors({});
         if (userRole === 'onboarding') {
             try {
                 const res = await api.post("/api/user-profile/new", {
@@ -21,8 +22,22 @@ export function EditProfile() {
                 });
                 setSubmitted(true);
             } catch (err) {
-                if (err.response && err.response.data && err.response.data.message) {
-                console.error("Server Error Message:", err.response.data.message);
+                if (err.response && err.response.data && err.response.data.error) {
+                    setErrors(err.response.data.error);
+                } else {
+                    console.error("Edit Profile Error:", err.message);
+                }
+            }
+        } else {
+            try {
+                const res = await api.post("/api/user-profile/edit", {
+                    firstName: firstName,
+                    lastName: lastName
+                });
+                setSubmitted(true);
+            } catch (err) {
+                if (err.response && err.response.data && err.response.data.error) {
+                    setErrors(err.response.data.error);
                 } else {
                     console.error("Edit Profile Error:", err.message);
                 }
@@ -38,6 +53,9 @@ export function EditProfile() {
                         role: 'user'
                     });
                     if (update) {
+                        await api.post('/api/message-board/add-to-default', {
+                            userId: userId
+                        })
                         updateUserRole('user')
                         navigate('/');
                     }
@@ -59,11 +77,17 @@ export function EditProfile() {
       <form onSubmit={handleSubmit} className='new-item-form'>
         <div className="form-row">
             <label htmlFor="firstName">First Name</label>
+             {errors.firstName && 
+              <p className='error-text'>{errors.firstName}</p>
+             }
             <input value={firstName} onChange={e => setFirstName(e.target.value)} type="text" />
-
+            
         </div>
         <div className='form-row'>
             <label htmlFor="lastName">Last Name</label>
+            {errors.lastName && 
+              <p className='error-text'>{errors.lastName}</p>
+             }
             <input value={lastName} onChange={e => setLastName(e.target.value)} type="text" />
         </div>
         <button className='btn'>Submit Changes</button>

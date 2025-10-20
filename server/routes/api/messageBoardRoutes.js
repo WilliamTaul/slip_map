@@ -12,5 +12,6 @@ router.delete('/remove-user/:boardid/:userid', auth.authenticateAdmin, controlle
 router.get('/user', auth.authenticateToken, controller.getUserBoards);
 router.get('/:boardId', auth.authenticateToken, controller.getMessageBoard);
 router.get('/:boardId/messages', auth.authenticateToken, controller.messageBoardGetMessages);
+router.post('/add-to-default', auth.authenticateToken, controller.addToDefaultBoard);
 
 module.exports = router;

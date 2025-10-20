@@ -15,6 +15,7 @@ export function AdminMessageBoards() {
     const [userProfiles, setUserProfiles] = useState([]);
     const [newModalIsOpen, setNewIsOpen] = useState(false);
     const [editModalIsOpen, setEditIsOpen] = useState(false);
+    const [confirmModalIsOpen, setConfirmOpen] = useState(false);
     const [selectedBoard, setSelectedBoard] = useState({});
     const [selectedBoardUsers, setSelectedBoardUsers] = useState({});
     const [filterBoardUsers, setFilterBoardUsers] = useState([]);
@@ -22,7 +23,7 @@ export function AdminMessageBoards() {
     const [filteredProfiles, setFilteredProfiles] = useState([]);
     const [newBoardTitle, setNewBoardTitle] = useState("");
     const [toggleLoad, setToggleLoad] = useState(false);
-    const { api, accessToken, userRole } = useAuth();
+    const { api, userRole} = useAuth();
     const  navigate  = useNavigate();
 
     useEffect(() => {
@@ -99,16 +100,15 @@ export function AdminMessageBoards() {
     }, [selectedBoard, userProfiles]);
 
     const handleBoardDelete = async (boardId) => {
-        if (window.confirm('This board will be permanently deleted!Continue?')) {
             try {
                 const res = await api.delete(`/api/message-board/delete/${boardId}`);
+                setConfirmOpen(false);
                 setEditIsOpen(false);
                 setSelectedBoard({});
                 setMessageBoards(prevBoards => prevBoards.filter(board => board._id !== boardId));
             } catch (err) {
                 console.error("ERROR", err);
             }
-        }
     };
 
     const handleNewBoard = async (e) => {
@@ -189,7 +189,10 @@ export function AdminMessageBoards() {
                 <>
                   <div className='form-row inline'>
                     <div style={{flex: 1, justifyContent: "center", display: "flex", marginLeft: "4em"}}>
-                        <button onClick={() => handleBoardDelete(selectedBoard._id)} className='btn btn-danger'>Delete Board</button>
+                        <button onClick={() => {
+                            setEditIsOpen(false);
+                            setConfirmOpen(true); }}
+                             className='btn btn-danger'>Delete Board</button>
                     </div>
                     <div style={{justifyContent: "flex-end", display: "flex"}}>
                         <button className='btn btn-danger' onClick={() => setEditIsOpen(false)}>Close</button>
@@ -258,6 +261,21 @@ export function AdminMessageBoards() {
                       </div>
                     </form>
                 </div>
+              </Modal>
+              <Modal
+                className={styles['confirm-modal']}
+                overlayClassName={styles['confirm-modal-overlay']}
+                isOpen={confirmModalIsOpen}
+                onRequestClose={() => setConfirmOpen(false)}
+              >
+              <h3 style={{textAlign: "center"}}>This board will be permanently deleted. All history will be erased and all users will lose access!</h3>
+              <h4 style={{textAlign: 'center'}}>Continue?</h4>
+              <div className='form-row'>
+                <button onClick={() => handleBoardDelete(selectedBoard._id)} className='btn btn-danger'>Delete Board</button>
+              </div>
+              <div className='form-row'>
+                <button onClick={() => {setConfirmOpen(false); setEditIsOpen(true)}} className='btn'>Cancel</button>
+              </div>
               </Modal>
             </div>
         </>

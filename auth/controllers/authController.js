@@ -6,9 +6,15 @@ import RefreshToken from '../models/refreshToken.js';
 import User from '../models/user.js';
 
 const register = async (req, res) => {
-    if (req.body.password.length < 8) return res.status(400).json({ message: "Password must be at least 8 characters",
-                                                                    errors: {password: "Password must be at least 8 characters!" } })
-    if (req.body.password !== req.body.matchPassword) return res.status(400).json({ errors: { password: "Password must match!" } })
+    const errors = {};
+    if (req.body.password.length < 8) {
+        errors.password = "Password must be at least 8 characters!"; 
+    }
+    if (req.body.password !== req.body.matchPassword) {
+        errors.password = "Password must match!";
+    }
+
+    if (Object.keys(errors).length > 0) return res.status(400).json({ errors: errors })
 
     try {
         const existingUser = await User.findOne({username: req.body.username});
@@ -19,7 +25,7 @@ const register = async (req, res) => {
         await user.save();
         
         const token = jwt.sign({id: user._id, role: user.role}, process.env.SECRET_TOKEN, {
-            expiresIn: '30s'
+            expiresIn: '15m'
         });
         const refreshToken = jwt.sign({id: user._id, role: user.role}, process.env.REFRESH_TOKEN, {
             expiresIn: '7d'
@@ -114,7 +120,7 @@ const token = async (req, res) => {
         if (!storedToken) return res.status(403).json({ message: 'Forbidden' });
 
         const newToken = jwt.sign({ id: payload.id, role: payload.role }, process.env.SECRET_TOKEN, {
-            expiresIn: '30s'
+            expiresIn: '15m'
         });
         const newRefreshToken= jwt.sign({ id: payload.id, role: payload.role }, process.env.REFRESH_TOKEN, {
             expiresIn: '7d'

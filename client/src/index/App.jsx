@@ -57,8 +57,6 @@ function Layout() {
         <Route path="/edit-profile" element={<EditProfile/>}/>
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
-        <Route path="/new-slip" element={<NewSlipForm/>}/>
-        <Route path="/message" element={<Message/>}/>
         <Route path="/message-board/:boardId" element={<MessageBoard/>}/>
         <Route path="/message-boards" element={<MessageBoards/>}/>
         <Route path="/admin/message-boards" element={<AdminMessageBoards/>}/>

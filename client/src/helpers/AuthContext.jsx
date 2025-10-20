@@ -41,21 +41,23 @@ export function AuthProvider({ children }) {
             return Promise.reject(error);
         }
 
-        if ((error.response?.status === 401 || error.response?.status === 403) && !originalRequest._retry && !originalRequest.url.includes('auth/token')) {
-            originalRequest._retry = true;
-            try {
-                const res = await instance.post('/auth/token');
+        if ((error.response?.status === 401 || error.response?.status === 403)
+             && !originalRequest._retry &&
+            !originalRequest.url.includes('auth/token')) {
+                originalRequest._retry = true;
+                try {
+                    const res = await instance.post('/auth/token');
 
-                const newAccessToken = res.data.token;
-                setAccessToken(newAccessToken);
+                    const newAccessToken = res.data.token;
+                    setAccessToken(newAccessToken);
 
-                originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
-``
-                return instance(originalRequest);
-            } catch (err) {
-            return Promise.reject(err);
+                    originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+                    return instance(originalRequest);
+                } catch (err) {
+                    setIsLoggedIn(false);
+                    return Promise.reject(err);
+                }
             }
-        }
 
         return Promise.reject(error);
         }

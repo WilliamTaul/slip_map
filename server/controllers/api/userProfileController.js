@@ -24,9 +24,15 @@ const getUserProfile = async (req, res) => {
 
 const createUserProfile = async (req, res) => {
     try {
-        if (!req.body.firstName || !req.body.lastName) return res.status(400).json({ error: { name: "Must provide first and last name" } });
-        if (req.body.firstName.length < 2) return res.status(400).json({ error: {firstName: "Must be at least 2 characters!" } });
-        if (req.body.lastName.length < 2 ) return res.status(400).json({ error: {lastName: "Must be at least 2 characters!" } });
+        const errors = {};
+        if (!req.body.firstName || req.body.firstName.length < 2) {
+            errors.firstName = "First name must be at least 2 characters";
+        }
+        if (!req.body.lastName || req.body.lastName.length < 2 ) {
+            errors.lastName = "Last name must be at least 2 characters";
+        }
+        if (Object.keys(errors).length > 0) return res.status(400).json({error: errors});
+        
         const userProfile = new UserProfile({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -42,12 +48,21 @@ const createUserProfile = async (req, res) => {
 
 const updateUserProfile = async (req, res) => {
     try {
+        const errors = {};
         if (!req.user.id) return res.status(400).json({ message: "User id must be provided" });
-        const userProfile = await UserProfile.findOne({ _id: req.user.id });
+        const userProfile = await UserProfile.findOne({ userId: req.user.id });
         if (!userProfile) return res.status(404).json({ message: "user profile not found!" });
 
-        if (req.body.firstName) userProfile.firstName = req.body.firstName;
-        if (req.body.lastName) userProfile.lastName = req.body.lastName;
+        if (!req.body.firstName || req.body.firstName.length < 2) {
+            errors.firstName = "First name must be at least 2 characters";
+        }
+        if (!req.body.lastName || req.body.lastName.length < 2 ) {
+            errors.lastName = "Last name must be at least 2 characters";
+        }
+        if (Object.keys(errors).length > 0) return res.status(400).json({error: errors});
+
+        userProfile.firstName = req.body.firstName;
+        userProfile.lastName = req.body.lastName;
 
         await userProfile.save();
         return res.status(200).json({ message: "updated successfull!" });

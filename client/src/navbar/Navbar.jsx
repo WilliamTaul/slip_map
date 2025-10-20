@@ -58,7 +58,17 @@ export function Navbar() {
     } else {
         navItems = [
             { name: "Home", path: "/", roles: [] },
-            { name: "New Slip", path: "/new-slip" }, 
+            { name: "Edit Profile", path: "/edit-profile" }, 
+            { name: "Message Boards", path: "/message-boards"},
+        ];
+    }
+
+    if (userRole === 'admin') {
+        navItems = [
+            { name: "Home", path: "/", roles: [] },
+            { name: "Admin Panel", path: "/admin/message-boards"},
+            { name: "Message Boards", path: "/message-boards"},
+            { name: "Edit Profile", path: "/edit-profile" }, 
         ];
     }
 

@@ -16,12 +16,26 @@ export function MessageBoard() {
     const boardRef = useRef(null);
     const navigate = useNavigate();
 
+    const timeOptions = {
+      timeZone: "America/Chicago",
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }
+
     useEffect(() => {
         // Retrieve messages from database
         const getMessages = async (boardId) => {
             try {
                 const res = await api.get(`/api/message-board/${boardId}/messages`);
-                setMessages(res.data);
+                const timeConvertedMessages = res.data.map(message => ({
+                    ...message,
+                    time: new Date(message.createdAt)
+                }));
+                setMessages(timeConvertedMessages);
             } catch (err) {
                 console.error("Error fetching messages: ", err.response);
             }
@@ -57,6 +71,7 @@ export function MessageBoard() {
         // track socket activity
         if (!socket) return;
         const handleChatMessage = (message) => {
+            message.time = new Date(message.createdAt)
             setMessages(prev => [...prev, message]);
         }
         socket.on('chatMessage', handleChatMessage);
@@ -92,8 +107,11 @@ export function MessageBoard() {
           <div className={styles['message-board']} ref={boardRef}>
             <ul className={styles['message-list']}>
               {messages.map(msg => 
-                  <li style={{ alignSelf: userId === msg.senderId ? "flex-end" : "flex-start"}}
-                  key={msg._id}><strong>{msg.firstName}:</strong><br/>{msg.content}</li>
+                  <li className={styles[userId === msg.senderId ? 'message-list-user' : 'message-list-other']}
+                    key={msg._id}><strong>{msg.firstName} - 
+                    {msg.time.toLocaleString('en-us', timeOptions).replace(',', ' ')}:
+                    </strong><br/>{msg.content}
+                  </li>
                 )}
             </ul>
           </div> 

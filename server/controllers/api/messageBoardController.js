@@ -108,6 +108,20 @@ const messageBoardGetMessages = async (req, res) => {
     }
 }
 
+const addToDefaultBoard = async (req, res) => {
+     try {
+        console.log("DEFAULT", process.env.DEFAULT_BOARD_ID);
+        if (!req.body.userId) return res.status(400).json({ message: "Board and user must be provided!" });
+        const exists = await MessageBoard.findOne({_id: process.env.DEFAULT_BOARD_ID, users: req.body.userId});
+        if (exists) return res.status(409).json({ message: "that user is already in the board" });
+        await MessageBoard.updateOne({ _id: process.env.DEFAULT_BOARD_ID }, { $addToSet: { users: req.body.userId } });
+        return res.status(200).json({ message: "User added to board." });
+    } catch (err) {
+        console.error("Database error: ", err);
+        res.status(500).json({ error: "Server Error" });
+    }
+}
+
 module.exports = { getMessageBoards, newMessageBoard, deleteMessageBoard,
                    getMessageBoard, messageBoardAddUser, messageBoardRemoveUser,
-                   getUserBoards, messageBoardGetMessages }
+                   getUserBoards, messageBoardGetMessages, addToDefaultBoard }
