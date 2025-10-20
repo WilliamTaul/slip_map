@@ -250,6 +250,13 @@ body {
   font-size: 2rem;
 }
 
+.user-name {
+  font-size: 1rem;
+  align-self: center;
+  color: var(--white);
+  margin-right: auto;
+}
+
 .nav ul {
   padding: 0;
   margin: 0;

@@ -76,6 +76,8 @@ export function Navbar() {
     return (
         <nav className="nav">
             <a href="/" className="site-title">Taulkie</a>
+            {firstName.length > 0 && 
+            <div className="user-name">Hello, {firstName}!</div>}
             <div className="nav-toggle-wrapper">
               <button
                 className="hamburger"
@@ -91,10 +93,6 @@ export function Navbar() {
                         <Link to={item.path}>{item.name}</Link>
                     </li>
                   ))}
-                   {firstName.length > 0 && 
-                  <li><button className="btn btn-nav">
-                    {firstName}
-                    </button></li>}
                   {isLoggedIn && 
                     <li key="logout">
                         <button className="btn btn-nav" onClick={() => handleLogout()}>Logout</button>    
