@@ -19,11 +19,9 @@ export function MessageBoard() {
     useEffect(() => {
         // Retrieve messages from database
         const getMessages = async (boardId) => {
-            console.log("get messages")
             try {
                 const res = await api.get(`/api/message-board/${boardId}/messages`);
                 setMessages(res.data);
-                console.log(res.data)
             } catch (err) {
                 console.error("Error fetching messages: ", err.response);
             }

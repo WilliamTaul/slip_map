@@ -24,7 +24,7 @@ export function EditProfile() {
                 if (err.response && err.response.data && err.response.data.message) {
                 console.error("Server Error Message:", err.response.data.message);
                 } else {
-                    console.error("New Slip Error:", err.message);
+                    console.error("Edit Profile Error:", err.message);
                 }
             }
         }

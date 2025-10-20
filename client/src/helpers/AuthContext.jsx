@@ -1,5 +1,4 @@
 import { createContext, useState, useContext, useEffect, useMemo , useRef} from 'react';
-import { useNavigate} from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
@@ -13,8 +12,6 @@ export function AuthProvider({ children }) {
     const [isAuthLoading, setIsAuthLoading] = useState(true);
     
     const refreshing = useRef(false);
-
-    const navigate = useNavigate();
 
     const api = useMemo(() => {
         const instance = axios.create({
@@ -53,14 +50,7 @@ export function AuthProvider({ children }) {
                 setAccessToken(newAccessToken);
 
                 originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
-                
-                /*const retry = await axios({
-                        ...originalRequest,
-                            headers: {
-                                ...originalRequest.headers,
-                                Authorization: `Bearer ${newAccessToken}`,
-                                },
-                });*/
+``
                 return instance(originalRequest);
             } catch (err) {
             return Promise.reject(err);

@@ -120,6 +120,7 @@ const token = async (req, res) => {
             expiresIn: '7d'
         });
         
+        await RefreshToken.deleteOne({ token: refreshToken });
         await RefreshToken.findOneAndUpdate({ token: newRefreshToken }, { userId: payload.id }, { upsert: true });
 
         res.cookie('refreshToken', newRefreshToken, {
