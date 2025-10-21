@@ -1,5 +1,5 @@
 # Taulkie: Real-Time 🚀 Messaging App with Admin Panel 
-## **React, Node.js, Express, Socket.IO – Full-stack chat platform with role-based access**
+## **React, Node.js, Express, Socket.IO – Full-stack messaging platform with role-based access**
 ### 🎥 Demo Videos (PLANNED)
 - [Quick Overview](#)
 - [In-depth Overview](#)
