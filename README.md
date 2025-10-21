@@ -1,3 +1,3 @@
-# slip_map
+# Taulkie
 React Node Authentication Project
 test
