@@ -18,14 +18,13 @@ export function Message({ boardId }) {
                                     boardId: boardId, firstName: firstName});
 
         setMessage("");
-        setCharCount(0);
     }
 
     useEffect(() => {
       // get the users name to attach to message
       const getfirstName = async () => {
         try {
-          const res = await api.get("/api/user-profile/info");
+          const res = await api.get(`${import.meta.env.VITE_BACKEND_URL}/api/user-profile/info`);
           setFirstName(res.data.firstName);
         } catch (err) {
 

@@ -18,7 +18,7 @@ export function EditProfile() {
         setSuccess({});
         if (userRole === 'onboarding') {
             try {
-                const res = await api.post("/api/user-profile/new", {
+                const res = await api.post(`${import.meta.env.VITE_BACKEND_URL}/api/user-profile/new`, {
                     firstName: firstName,
                     lastName: lastName
                 });
@@ -33,7 +33,7 @@ export function EditProfile() {
             }
         } else {
             try {
-                const res = await api.post("/api/user-profile/edit", {
+                const res = await api.post(`${import.meta.env.VITE_BACKEND_URL}/api/user-profile/edit`, {
                     firstName: firstName,
                     lastName: lastName
                 });
@@ -53,11 +53,11 @@ export function EditProfile() {
         const handleUpdateRole = async () => {
             if (userRole === 'onboarding' && submitted === true) {
                 try {
-                    const update = await api.post("/auth/update-role", {
+                    const update = await api.post(`${import.meta.env.VITE_AUTH_URL}/auth/update-role`, {
                         role: 'user'
                     });
                     if (update) {
-                        await api.post('/api/message-board/add-to-default', {
+                        await api.post(`${import.meta.env.VITE_BACKEND_URL}/api/message-board/add-to-default`, {
                             userId: userId
                         })
                         updateUserRole('user')
@@ -80,7 +80,7 @@ export function EditProfile() {
         const loadProfileInfo = async () => {
             if (userRole === 'onboarding') return;
             try {
-                const res = await api.get("/api/user-profile/info");
+                const res = await api.get(`${import.meta.env.VITE_BACKEND_URL}/api/user-profile/info`);
                 setFirstName(res.data.firstName);
                 setLastName(res.data.lastName);
             } catch (err) {

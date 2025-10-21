@@ -22,7 +22,7 @@ export default function SocketProvider({ children }) {
             return;
         }
 
-        const socketIo = io('http://localhost:3000', {
+        const socketIo = io(`${import.meta.env.VITE_BACKEND_URL}`, {
             auth: {token: accessToken}
         });
 

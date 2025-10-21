@@ -23,7 +23,7 @@ export function MessageBoards() {
         // Retrieve all boards that the user has access to
         const getBoards = async (userId) => {
             try {
-                const res = await api.get("/api/message-board/user");
+                const res = await api.get(`${import.meta.env.VITE_BACKEND_URL}/api/message-board/user`);
                 setMessageBoards(res.data);
             } catch (err) {
                console.error("Server Error: ", err);

@@ -30,7 +30,7 @@ export function MessageBoard() {
         // Retrieve messages from database
         const getMessages = async (boardId) => {
             try {
-                const res = await api.get(`/api/message-board/${boardId}/messages`);
+                const res = await api.get(`${import.meta.env.VITE_BACKEND_URL}/api/message-board/${boardId}/messages`);
                 const timeConvertedMessages = res.data.map(message => ({
                     ...message,
                     time: new Date(message.createdAt)
@@ -49,7 +49,7 @@ export function MessageBoard() {
         // Retrieve information about the specific board
         const getBoard = async (boardId) => {
             try {
-                const res = await api.get(`/api/message-board/${boardId}`);
+                const res = await api.get(`${import.meta.env.VITE_BACKEND_URL}/api/message-board/${boardId}`);
                 setBoardTitle(res.data.title);                
             } catch (err) {
                 console.error("Error fetching board info: ", err.response);

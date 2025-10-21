@@ -39,7 +39,7 @@ export function Navbar() {
                     setFirstName("");
                     return;
                 }
-                const res = await api.get("/api/user-profile/info");
+                const res = await api.get(`${import.meta.env.VITE_BACKEND_URL}/api/user-profile/info`);
                 setFirstName(res.data.firstName);
             } catch (err) {
                 console.error(err);

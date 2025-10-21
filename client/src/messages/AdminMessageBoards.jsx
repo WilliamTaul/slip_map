@@ -40,7 +40,7 @@ export function AdminMessageBoards() {
         // get all boards on load
         const getBoards = async () => {
             try {
-            const res = await api.get("/api/message-board/");
+            const res = await api.get(`${import.meta.env.VITE_BACKEND_URL}/api/message-board/`);
             const boardsWithCount = res.data.map(board => ({
                 ...board,
                 currentUserAmount: board.users.length
@@ -57,7 +57,7 @@ export function AdminMessageBoards() {
         // retrieve the updated board when adding/removing users 
         const updateBoard = async () => {
             if (selectedBoard && Object.keys(selectedBoard).length > 0) {
-                const res = await api.get(`/api/message-board/${selectedBoard._id}`);
+                const res = await api.get(`${import.meta.env.VITE_BACKEND_URL}/api/message-board/${selectedBoard._id}`);
                 if (res.data) {
                     setMessageBoards(prev => prev.map(board =>
                             board._id === res.data._id
@@ -76,7 +76,7 @@ export function AdminMessageBoards() {
         // Get all user profiles so they can be added to boards
         const getUserProfiles = async () => {
             try {
-                const res = await api.get("/api/user-profile");
+                const res = await api.get(`${import.meta.env.VITE_BACKEND_URL}/api/user-profile`);
                 setUserProfiles(res.data);
             } catch (err) {
                 console.error("ERROR", err);
@@ -101,7 +101,7 @@ export function AdminMessageBoards() {
 
     const handleBoardDelete = async (boardId) => {
             try {
-                const res = await api.delete(`/api/message-board/delete/${boardId}`);
+                const res = await api.delete(`${import.meta.env.VITE_BACKEND_URL}/api/message-board/delete/${boardId}`);
                 setConfirmOpen(false);
                 setEditIsOpen(false);
                 setSelectedBoard({});
@@ -115,7 +115,7 @@ export function AdminMessageBoards() {
         e.preventDefault();
         if (newBoardTitle.length <= 1) return;
         try {
-            const res = await api.post("/api/message-board/new", {
+            const res = await api.post(`${import.meta.env.VITE_BACKEND_URL}/api/message-board/new`, {
                 title: newBoardTitle
             });
             setNewBoardTitle("");
@@ -129,7 +129,7 @@ export function AdminMessageBoards() {
     const handleAddUser = async (user) => {
         if (!user) return;
         try {
-            const res = await api.post('/api/message-board/add-user', {
+            const res = await api.post(`${import.meta.env.VITE_BACKEND_URL}/api/message-board/add-user`, {
                 boardId: selectedBoard._id,
                 userId: user.userId,
             });
@@ -148,7 +148,7 @@ export function AdminMessageBoards() {
     const handleRemoveUser = async (user) => {
         if (!user) return;
         try {
-            const res = await api.delete(`/api/message-board/remove-user/${selectedBoard._id}/${user.userId}`);
+            const res = await api.delete(`${import.meta.env.VITE_BACKEND_URL}/api/message-board/remove-user/${selectedBoard._id}/${user.userId}`);
             setMessageBoards(prev => prev.map(board => 
                 board._id === selectedBoard._id ? {...board, 
                                                     currentUserAmount: board.currentUserAmount - 1 }

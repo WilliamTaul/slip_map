@@ -1,0 +1,62 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${BACKEND_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=${DB_HOST}
+      - SECRET_TOKEN=${SECRET_TOKEN}
+      - REFRESH_TOKEN=${REFRESH_TOKEN}
+    ports:
+      - "${BACKEND_PORT}:3000"
+    depends_on:
+      - mongodb
+
+  auth:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    environment:
+      - PORT=${BACKEND_AUTH_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - AUTH_DB_NAME=${AUTH_DB_NAME}
+      - DB_HOST=${DB_HOST}
+      - SECRET_TOKEN=${SECRET_TOKEN}
+      - REFRESH_TOKEN=${REFRESH_TOKEN}
+    ports:
+      - "${BACKEND_AUTH_PORT}:3001"
+    depends_on:
+      - mongodb
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    environment:
+    - VITE_BACKEND_URL=${VITE_BACKEND_URL}
+    - VITE_AUTH_URL=${VITE_AUTH_URL}
+    ports:
+      - "${FRONTEND_PORT}:3002"
+    depends_on:
+      - backend
+      - auth
+volumes:
+  mongo-data:

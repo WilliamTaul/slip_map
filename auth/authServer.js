@@ -9,7 +9,8 @@ db();
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3002',],
+    origin: ['http://localhost:3000', 'http://localhost:3002', 
+        'http://client:3002', 'http://backend:3000'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
@@ -18,5 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/auth', authRouter);
+app.get('/health', (req, res) => res.send('Auth service is UP'));
+
 
 app.listen(3001);

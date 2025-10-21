@@ -7,9 +7,5 @@ export default defineConfig({
   server: {
     port: 3002,
     host: true,
-    proxy: {
-      '/api': 'http://localhost:3000',
-      '/auth': 'http://localhost:3001'
-    }
   }
 })
