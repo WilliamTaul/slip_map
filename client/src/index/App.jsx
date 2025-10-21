@@ -3,10 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation} from "react-router
 
 import { Navbar } from '../navbar/Navbar';
 import { Login } from '../auth/Login';
-import { NewSlipForm } from '../slips/NewSlipForm';
 import { Register } from '../auth/Register';
 import { Home } from './Home';
-import { Message } from '../messages/Message'
 import { MessageBoard } from '../messages/MessageBoard';
 import { MessageBoards } from '../messages/MessageBoards';
 import { EditProfile } from '../profile/EditProfile';

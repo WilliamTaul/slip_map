@@ -24,16 +24,12 @@ app.use(express.json());
 
 const userRouter = require('./routes/views/users');
 const indexRouter = require('./routes/views/index');
-const slipRouter = require('./routes/views/slip');
-const apiSlipRouter = require('./routes/api/slipApi');
 const messageRouter = require('./routes/api/messageRoutes');
 const messageBoardRouter = require('./routes/api/messageBoardRoutes');
 const userProfileRouter = require('./routes/api/userProfileRoutes');
 
 app.use('/users', userRouter);
 app.use('/', indexRouter);
-app.use('/slips', slipRouter);
-app.use('/api/slips', apiSlipRouter);
 app.use('/api/message', messageRouter);
 app.use('/api/message-board', messageBoardRouter);
 app.use('/api/user-profile', userProfileRouter);
