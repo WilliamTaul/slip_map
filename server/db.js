@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
     try {
-        await mongoose.connect('mongodb://localhost:27017/canvas_db');
+        await mongoose.connect('mongodb://localhost:27017/taulkie_db');
         console.log('MongoDB Connected');
     } catch (err) {
         console.error('MongoDB connection failed: ', err);

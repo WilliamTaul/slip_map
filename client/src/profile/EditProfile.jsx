@@ -9,11 +9,13 @@ export function EditProfile() {
     const [lastName, setLastName] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const [errors, setErrors] = useState({});
+    const [success, setSuccess] = useState({})
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setErrors({});
+        setSuccess({});
         if (userRole === 'onboarding') {
             try {
                 const res = await api.post("/api/user-profile/new", {
@@ -21,6 +23,7 @@ export function EditProfile() {
                     lastName: lastName
                 });
                 setSubmitted(true);
+                setSuccess({submit: "Successfully updated!"});
             } catch (err) {
                 if (err.response && err.response.data && err.response.data.error) {
                     setErrors(err.response.data.error);
@@ -35,6 +38,7 @@ export function EditProfile() {
                     lastName: lastName
                 });
                 setSubmitted(true);
+                setSuccess({submit: "Successfully updated!"});
             } catch (err) {
                 if (err.response && err.response.data && err.response.data.error) {
                     setErrors(err.response.data.error);
@@ -71,9 +75,25 @@ export function EditProfile() {
         handleUpdateRole();
     }, [submitted]);
 
+    useEffect(() => {
+        // Load user profile info to populate the fields
+        const loadProfileInfo = async () => {
+            if (userRole === 'onboarding') return;
+            try {
+                const res = await api.get("/api/user-profile/info");
+                setFirstName(res.data.firstName);
+                setLastName(res.data.lastName);
+            } catch (err) {
+                console.err("Error loading profile info:", err);
+            }
+        }
+        loadProfileInfo();
+    }, [])
+
     return (
     <div className='form-wrapper'>
       <h1 style={{textAlign: "center"}}>Update Profile</h1>
+      {success.submit && <h5 style={{textAlign: "center"}}>{success.submit}</h5>}
       <form onSubmit={handleSubmit} className='new-item-form'>
         <div className="form-row">
             <label htmlFor="firstName">First Name</label>

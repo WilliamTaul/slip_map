@@ -35,7 +35,7 @@ export function Navbar() {
         // update user info when logged in state changes
         const updateName = async () => {
             try {
-                if (!isLoggedIn || userRole === 'admin') {
+                if (!isLoggedIn) {
                     setFirstName("");
                     return;
                 }

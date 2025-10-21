@@ -241,7 +241,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items:  stretch;
-  gap: 2rem;
+  gap: 1rem;
   padding: 0 1rem;
   border-radius: 0.25em;
 }
@@ -251,7 +251,7 @@ body {
 }
 
 .user-name {
-  font-size: 1rem;
+  font-size: 0.85rem;
   align-self: center;
   color: var(--white);
   margin-right: auto;

@@ -17,11 +17,11 @@ const register = async (req, res) => {
     if (Object.keys(errors).length > 0) return res.status(400).json({ errors: errors })
 
     try {
-        const existingUser = await User.findOne({username: req.body.username});
+        const existingUser = await User.findOne({username: req.body.username.toLowerCase()});
         if (existingUser) return res.status(409).json({ errors: { username: "Username already taken!" }, message: 'Username already taken'});
 
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        const user = new User({username: req.body.username, password: hashedPassword});
+        const user = new User({username: req.body.username.toLowerCase(), password: hashedPassword});
         await user.save();
         
         const token = jwt.sign({id: user._id, role: user.role}, process.env.SECRET_TOKEN, {
@@ -48,7 +48,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const user = await User.findOne({ username: req.body.username });
+        const user = await User.findOne({ username: req.body.username.toLowerCase() });
         if (!user) return res.status(401).json({ error: {login: "Invalid username/password"} });
         if (await bcrypt.compare(req.body.password, user.password)) {
             await RefreshToken.deleteMany({ userId: user.id });
@@ -97,6 +97,8 @@ const logout = async (req, res) => {
 }
 
 function verifyJwtAsync(token, secret) {
+    // jwt verify must be wrapped in a promise to be awaited in the
+    // token function properly 
   return new Promise((resolve, reject) => {
     try {
       jwt.verify(token, secret, (err, decoded) => {
@@ -148,7 +150,6 @@ const token = async (req, res) => {
 }
 
 const updateRole = async (req, res) => {
-    console.log("entering auth update role")
     const allowedRoles = ['admin', 'user'];
 
     if (!req.body.role) return res.status(400).json({message: "No role provided"});
