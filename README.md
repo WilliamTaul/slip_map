@@ -7,6 +7,15 @@
 ### 🐳 Download as a Docker container and try yourself! (PLANNED)
 - [Docker Page](#)
 
+### Home Screen
+![Home Screen](assets/screenshot1.png)
+
+### Chat Interface
+![Chat Interface](assets/screenshot2.png)
+
+### Admin Panel
+![Admin Panel](assets/screenshot3.png)
+
 ### ✨ Features
 - **Real-time Messaging:** Instant updates on new messages
 - **Role-based access:** Differentiates between user and admin roles with permissions
