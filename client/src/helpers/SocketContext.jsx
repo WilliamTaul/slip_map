@@ -17,7 +17,6 @@ export default function SocketProvider({ children }) {
             if (socket) {
                 socket.disconnect();
                 setSocket(null);
-                console.log('Socket Disconnected');
             }
             return;
         }
@@ -27,12 +26,10 @@ export default function SocketProvider({ children }) {
         });
 
         setSocket(socketIo);
-        console.log('Socket Connected');
 
         return () => {
             socketIo.disconnect();
             setSocket(null);
-            console.log('Socket Disconnected (cleanup)');
         }
 
     }, [isLoggedIn, accessToken]);

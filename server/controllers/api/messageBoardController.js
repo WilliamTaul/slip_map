@@ -27,7 +27,6 @@ const getMessageBoard = async (req, res) => {
 
 const getUserBoards = async (req, res) => {
     try {
-        console.log("USER:" , req.user.id);
         if (!req.user.id) return res.status(400).json({message: "no user provided" });
         const boards = await MessageBoard.find({ users: req.user.id });
         return res.status(200).json(boards);
@@ -110,7 +109,6 @@ const messageBoardGetMessages = async (req, res) => {
 
 const addToDefaultBoard = async (req, res) => {
      try {
-        console.log("DEFAULT", process.env.DEFAULT_BOARD_ID);
         if (!req.body.userId) return res.status(400).json({ message: "Board and user must be provided!" });
         const exists = await MessageBoard.findOne({_id: process.env.DEFAULT_BOARD_ID, users: req.body.userId});
         if (exists) return res.status(409).json({ message: "that user is already in the board" });

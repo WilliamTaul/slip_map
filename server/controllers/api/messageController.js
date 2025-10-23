@@ -13,7 +13,6 @@ const getMessages = async (req, res) => {
 
 const newMessage = async (req, res) => {
     try {
-        console.log("UserId from token: ", req.user.id);
         if (!req.body.content) return res.status(400).json({ error: "Message must contain content" });
         const message = new Message({ content: req.body.content, senderId: req.body.senderId,
                                     receiverId: req.body.receiverId });

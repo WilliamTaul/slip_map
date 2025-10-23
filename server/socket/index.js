@@ -52,7 +52,6 @@ module.exports = function (io) {
             } catch (err) {
                 console.error("Did not save message: ", err);
             }
-            console.log('Received message: ', msg);
             io.to(msg.boardId).emit('chatMessage', saved);
         })
     });

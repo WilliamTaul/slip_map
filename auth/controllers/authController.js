@@ -156,7 +156,6 @@ const updateRole = async (req, res) => {
     if (!allowedRoles.includes(req.body.role)) return res.status(404).json({message: "bad role"});
 
     try {
-        console.log("entering try statement")
         const refreshToken = req.cookies.refreshToken;
         if (refreshToken == null) return res.status(401).json({message: "bad token"});
         const payload = await verifyJwtAsync(refreshToken, process.env.REFRESH_TOKEN);

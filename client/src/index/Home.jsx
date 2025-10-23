@@ -25,7 +25,7 @@ export function Home() {
           scalability, future plans, and the full tech stack please visit the GitHub repository linked below.
          </div>
          <div className="home-div">
-          <a className="home-link" href="https://github.com/">Taulkie's Repo</a>
+          <a className="home-link" href="https://github.com/WilliamTaul/taulkie" target="_blank" rel="noopener noreferrer">Taulkie's Repo</a>
          </div>
       </div>
     </>

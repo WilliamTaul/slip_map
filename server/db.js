@@ -2,8 +2,6 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
     try {
-        console.log("USER:", process.env.DB_USER);
-        console.log("PASSWORD:", process.env.DB_PASSWORD);
         await mongoose.connect(`mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`);
         console.log('MongoDB Connected');
     } catch (err) {
