@@ -1,8 +1,6 @@
 const MessageBoard = require('../../models/messageBoardSchema');
 const Message = require('../../models/messageSchema');
 
-const { Types } = require('mongoose');
-
 const getMessageBoards = async (req, res) => {
     try {
         const messageBoards = await MessageBoard.find({});

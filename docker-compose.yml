@@ -24,6 +24,7 @@ services:
       - DB_HOST=${DB_HOST}
       - SECRET_TOKEN=${SECRET_TOKEN}
       - REFRESH_TOKEN=${REFRESH_TOKEN}
+      - DEFAULT_BOARD_ID=${DEFAULT_BOARD_ID}
     ports:
       - "${BACKEND_PORT}:3000"
     depends_on:
