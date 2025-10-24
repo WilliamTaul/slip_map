@@ -21,26 +21,22 @@
 
 1. **Clone the Repository**
 
-2. **Rename** each provided '.env.example' file to '.env'
-    - You will find one in each of the following directories:
-      - `client/`
-      - `auth/`
-      - `server/`
-      - project **root**
-    - *(You can also use these files as templates to add your own secure credentials.)*
+2. **Rename** the provided '.env.example' file to '.env' in the project **root**
+   - **Be careful** as there are several .env.examples provided, one for each individual service. *However* the only one necessary for docker-compose is the one in the **ROOT** directory!
+   - The other .env.examples should only be used as templates if you wish to run the project locally without Docker.
     
-3. **Ensure no other processes are using ports** `3000`, `3001`, `3002`, or `27018`.
+4. **Ensure no other processes are using ports** `3000`, `3001`, `3002`, or `27018`.
    - If there are, you can adjust the port mappings inside your `docker-compose.yml`.
-4. From the **project-root** run
+5. From the **project-root** run
    `docker compose up --build` or `docker-compose up --build` *The command will depend on which version of Docker you have*
-5. Once the container starts use your browser and navigate to [http://localhost:3002](http://localhost:3002/)
-6. Log in using one of the demo accounts:
+6. Once the container starts use your browser and navigate to [http://localhost:3002](http://localhost:3002/)
+7. Log in using one of the demo accounts:
    - Users: `john`, `emma`, `michael`, `olivia`, `david`, `sophia`
    - Password for all is `password`
-7. Admin account:
+8. Admin account:
    - Username: `admin`
    - Password: `password`
-8. 🎉 Enjoy exploring the demo!
+9. 🎉 Enjoy exploring the demo!
 
 ---
 
