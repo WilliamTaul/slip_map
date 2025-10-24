@@ -5,10 +5,8 @@
 |-------------|----------------|-------------|
 | ![Home Screen](assets/screenshot1.png) | ![Chat Interface](assets/screenshot2.png) | ![Admin Panel](assets/screenshot3.png) |
 
-### 🎥 Demo Videos (PLANNED)
-- [Quick Overview](#)
-- [In-depth Overview](#)
-- [Authentication/Axios Walkthrough](#)
+### 🎥 Demo Video
+- [Quick Overview](https://www.youtube.com/watch?v=2wwPwl1xS7w) - 3-minute walkthrough of the application
 
 ---
 
