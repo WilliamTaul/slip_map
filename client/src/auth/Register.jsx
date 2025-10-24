@@ -6,7 +6,7 @@ import { useAuth } from '../helpers/AuthContext';
 import "../styles.css";
 
 export function Register() {
-    const { register, api } = useAuth();
+    const { register } = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [matchPassword, setMatchPassword] = useState("");

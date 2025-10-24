@@ -19,7 +19,5 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/auth', authRouter);
-app.get('/health', (req, res) => res.send('Auth service is UP'));
-
 
 app.listen(3001);

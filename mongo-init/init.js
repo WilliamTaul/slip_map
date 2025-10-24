@@ -9,7 +9,7 @@ db.createUser({
 
 db.createCollection('userprofiles');
 db.userprofiles.insertMany([
-    // make userprofiles, use the ids to create users 
+    // make userprofiles, use the same ids later to create users 
     {
     firstName: "John",
     lastName: "Smith",

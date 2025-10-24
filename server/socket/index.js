@@ -13,7 +13,7 @@ module.exports = function (io) {
 
     jwt.verify(token, process.env.SECRET_TOKEN, (err, user) => {
         if (err) {
-            console.warn('Socket JWT verification failed: ', err.message);
+            console.error('Socket JWT verification failed: ', err.message);
             return next(new Error("Authentication error: Invalid or expired token"));
         }
 

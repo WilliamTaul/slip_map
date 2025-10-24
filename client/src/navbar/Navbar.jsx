@@ -33,6 +33,7 @@ export function Navbar() {
 
     useEffect(() => {
         // update user info when logged in state changes
+        // or when user is done onboarding (role changes)
         const updateName = async () => {
             try {
                 if (!isLoggedIn) {
@@ -46,7 +47,7 @@ export function Navbar() {
             }
         }
         updateName();
-    }, [isLoggedIn])
+    }, [isLoggedIn, userRole])
 
     let navItems = [];
 

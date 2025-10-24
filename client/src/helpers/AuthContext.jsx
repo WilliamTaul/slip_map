@@ -17,53 +17,51 @@ export function AuthProvider({ children }) {
         const instance = axios.create({
         withCredentials: true,
     });
-    instance.interceptors.request.use(
-        config => {
-            if (!config.headers.Authorization && accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`;
-            }
-            return config;
-        },
-        error => Promise.reject(error)
-    );
-    instance.interceptors.response.use(
-        response => response,
-        async error => {
-        const originalRequest = error.config;
-
-        const excludedPaths = [
-            '/auth/login',
-            '/auth/register',
-            '/auth/token'
-        ];
-
-        if (excludedPaths.some(path => originalRequest.url.includes(path))) {
-            return Promise.reject(error);
-        }
-
-        if ((error.response?.status === 401 || error.response?.status === 403)
-             && !originalRequest._retry &&
-            !originalRequest.url.includes('auth/token')) {
-                originalRequest._retry = true;
-                try {
-                    const res = await instance.post(`${import.meta.env.VITE_AUTH_URL}/auth/token`);
-
-                    const newAccessToken = res.data.token;
-                    setAccessToken(newAccessToken);
-
-                    originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
-                    return instance(originalRequest);
-                } catch (err) {
-                    setIsLoggedIn(false);
-                    return Promise.reject(err);
+        instance.interceptors.request.use(
+            config => {
+                if (!config.headers.Authorization && accessToken) {
+                config.headers.Authorization = `Bearer ${accessToken}`;
                 }
+                return config;
+            },
+            error => Promise.reject(error)
+        );
+        instance.interceptors.response.use(
+            response => response,
+            async error => {
+            const originalRequest = error.config;
+
+            const excludedPaths = [
+                '/auth/login',
+                '/auth/register',
+                '/auth/token'
+            ];
+
+            if (excludedPaths.some(path => originalRequest.url.includes(path))) {
+                return Promise.reject(error);
             }
 
-        return Promise.reject(error);
-        }
-    );
+            if ((error.response?.status === 401 || error.response?.status === 403)
+                && !originalRequest._retry && !originalRequest.url.includes('auth/token')) {
+                    originalRequest._retry = true;
+                    try {
+                        const res = await instance.post(`${import.meta.env.VITE_AUTH_URL}/auth/token`);
 
-    return instance;
+                        const newAccessToken = res.data.token;
+                        setAccessToken(newAccessToken);
+
+                        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+                        return instance(originalRequest);
+                    } catch (err) {
+                        setIsLoggedIn(false);
+                        return Promise.reject(err);
+                    }
+                }
+
+            return Promise.reject(error);
+            }
+        );
+        return instance;
     }, [accessToken]);
     useEffect(() => {
         // keep user authenticated on page refresh if their refersh token

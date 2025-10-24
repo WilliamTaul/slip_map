@@ -55,8 +55,7 @@ const deleteMessageBoard = async (req, res) => {
         if (!req.params.id) return res.status(400).json({ message: "Message board must be provided!" });
 
         const deletedBoard = await MessageBoard.deleteOne({ _id: req.params.id });
-        console.log("Board deleted: ", req.params);
-        
+
         if (deletedBoard.deletedCount > 0) return res.status(204).json({ message: "Board successfully deleted" });
         return res.status(404).json({ message: "Not Found!" });
     } catch (err) {

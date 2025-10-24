@@ -1,7 +1,6 @@
 const Message = require('../../models/messageSchema');
 
 const getMessages = async (req, res) => {
-    // Development only return all messages
     try {
         const messages = await Message.find({});
         res.status(200).json(messages);
