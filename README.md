@@ -32,7 +32,7 @@
 3. **Ensure no other processes are using ports** `3000`, `3001`, `3002`, or `27018`.
    - If there are, you can adjust the port mappings inside your `docker-compose.yml`.
 4. From the **project-root** run
-   `docker compose up --build`
+   `docker compose up --build` or `docker-compose up --build` *The command will depend on which version of Docker you have*
 5. Once the container starts use your browser and navigate to [http://localhost:3002](http://localhost:3002/)
 6. Log in using one of the demo accounts:
    - Users: `john`, `emma`, `michael`, `olivia`, `david`, `sophia`
